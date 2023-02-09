@@ -1,0 +1,21 @@
+package kr.or.ddit.controller.calendar.service;
+
+import java.util.List;
+import java.util.Map;
+
+import kr.or.ddit.vo.DragTestVO;
+import kr.or.ddit.vo.TopWorkVO;
+
+
+public interface ICalendarService {
+
+    public List<TopWorkVO> list() throws Exception;
+
+    public void insert(Map<String, String> map) throws Exception;
+
+    public void updateMove(Map<String, String> map) throws Exception;
+
+    public void update(Map<String, String> map) throws Exception;
+
+    
+}

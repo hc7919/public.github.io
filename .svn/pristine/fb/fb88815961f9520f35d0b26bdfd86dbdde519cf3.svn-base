@@ -1,0 +1,17 @@
+package kr.or.ddit.vo;
+
+import lombok.Data;
+
+@Data
+public class FileVO {
+	private int fileLNo2;   // 파일 고유 번호
+	private int fileLNo;    // 파일 경로 번호
+	private String fileRealName; // 파일 진짜 이름   홍길동.png
+	private String fileName; //  dk213jkldjkla2kl1jd_홍길동.png
+	private String UUID;
+	private String fileSize;  // 123431
+	private int fileDownCnt;  //   파일 다운로드 수
+	private String filePath;  //    프로젝트1 // 카테고리 이름
+	private boolean fileIsdeleted;  // 파일의 삭제 유무
+	private boolean image;
+}

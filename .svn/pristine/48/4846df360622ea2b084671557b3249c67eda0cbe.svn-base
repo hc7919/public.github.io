@@ -1,0 +1,62 @@
+package kr.or.ddit.controller.upload;
+
+import java.io.File;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.stereotype.Service;
+
+import kr.or.ddit.vo.ProjectVO;
+import kr.or.ddit.vo.TopWorkCategoryVO;
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+@Slf4j
+public class UploadServiceImpl implements IUploadService{
+
+	/**
+	 * @param proNo  //프로젝트 고유번호
+	 *  해당 프로젝트 번호로 realpath / 프로젝트 번호 폴더생성
+	 *
+	 */
+	@Override
+	public void mkProjectDir(ProjectVO projectVO, HttpServletRequest req) {
+		 String path = req.getSession().getServletContext().getRealPath("resources/upload/");
+	        File file = new File(path + projectVO.getProNo());
+	        log.debug("새로 생길 경로 : {}", path+"/"+projectVO.getProNo());
+	        if(!file.exists()) {
+	        	file.mkdirs();
+	        }
+	}
+
+	@Override
+	public void mkCategoryDir(TopWorkCategoryVO topWorkCategoryVO, HttpServletRequest req) {
+		log.debug("프로젝트 번호 : {}", topWorkCategoryVO.proNo);
+		log.debug("카테고리 이름 : {}", topWorkCategoryVO.twCategoryName);
+
+		String proNo = topWorkCategoryVO.proNo;
+		String twCategoryName = topWorkCategoryVO.twCategoryName;
+		String path = getFolder(proNo, twCategoryName, req);
+		log.debug("새로생긴 경로 : {}", path);
+		File file = new File(path);
+
+		if(!file.exists()) {
+			file.mkdirs();
+		}
+
+	}
+
+	/**
+	 *  클라이언트에서 프로젝트 번호와 어디서 업로드 했는지 받아와서
+	 * @return
+	 */
+	private String getFolder(String proNo, String twCategoryName, HttpServletRequest req) {
+		String path = req.getSession().getServletContext().getRealPath("resources/upload/");
+		String str = proNo +"-"+ twCategoryName;
+		return path + str.replace("-", File.separator);
+	}
+
+
+
+
+}

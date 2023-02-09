@@ -1,0 +1,12 @@
+package kr.or.ddit.vo;
+
+import lombok.Data;
+
+@Data
+public class ProjectLogVO {
+    private String proLogNo;
+    private String proNo;
+    private String proLogContent;
+    private String proLogDate;
+    private String topWorkNo;
+}

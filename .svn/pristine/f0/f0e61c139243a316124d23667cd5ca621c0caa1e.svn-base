@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.ProjectMapper">
+    <insert id="insert" parameterType="projectVO">
+        <selectKey resultType="String" keyProperty="proNo" order="BEFORE">
+            SELECT SEQ_PROJECT.NEXTVAL
+              FROM DUAL
+        </selectKey>
+        INSERT INTO PROJECT (
+            PRO_NO
+          , PRO_NAME
+          , MEMBER_ID
+        ) VALUES (
+            #{proNo}
+          , #{proName}
+          , #{memberId}
+        )
+    </insert>
+    
+    <insert id="insertJoinState" parameterType="projectJoinStateVO">
+        INSERT INTO PROJECT_JOIN_STATE (
+            PRO_J_S_NO
+          , PRO_NO
+          , MEMBER_ID
+          , PRO_AUTH
+          , PRO_JOINSTATE
+        ) VALUES (
+            SEQ_PROJECT_JOIN.NEXTVAL
+          , #{proNo}
+          , #{memberId}
+          , #{proAuth}
+          , 1
+        )
+    </insert>
+    
+    <select id="list" resultType="projectVO">
+        SELECT *
+          FROM PROJECT
+         ORDER BY TO_NUMBER(PRO_NO) ASC
+    </select>
+    
+    <select id="selectOne" resultType="projectVO" parameterType="String">
+    	SELECT * 
+    	FROM PROJECT
+    	WHERE PRO_NO = #{proNo}
+    </select>
+    
+</mapper>

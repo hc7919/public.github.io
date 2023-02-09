@@ -1,0 +1,73 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<title>Dashboard | Codefox - Responsive Admin Dashboard Template</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+<meta content="Coderthemes" name="author" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<!-- App favicon -->
+<link rel="shortcut icon" href="/assets/images/favicon.ico">
+
+<!-- App css -->
+<link href="/assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
+<link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet" />
+
+<link href="/assets/css/bootstrap-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" />
+<link href="/assets/css/app-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet" />
+
+<!-- icons -->
+<link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+
+<!-- font -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap" rel="stylesheet">
+<style type="text/css">
+* {
+	font-family: 'IBM Plex Sans KR', sans-serif !important;
+}
+</style>
+
+<!-- fullcalendar -->
+<%-- <link href="/assets/libs/fullcalendar/main.min.css" rel="stylesheet" type="text/css" /> --%>
+<!-- Plugins js-->
+<%-- <script src="/assets/libs/apexcharts/apexcharts.min.js"></script> --%>
+
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/gulp/3.8.5/gulp.min.js" integrity="sha512-/t2QTDqdi+qF/biht8vq9VhWvE2bmMHasiO1PWPGql4BIZwa/XrhbzO098+R9GGK4yBIFKBFvLZ7SIhsZrIUgw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+
+
+</head>
+<body class="loading" data-layout='{"mode": "light", "width": "fluid", "menuPosition": "fixed", "sidebar": { "color": "light", "size": "default", "showuser": false}, "topbar": {"color": "dark"}, "showRightSidebarOnPageLoad": false}'>
+	<!-- Begin page -->
+	<div id="wrapper">
+		<tiles:insertAttribute name="topbar" />
+		<tiles:insertAttribute name="leftSidebar" />
+		<tiles:insertAttribute name="content" />
+		<tiles:insertAttribute name="footer" />
+	</div>
+	<!-- END wrapper -->
+	<tiles:insertAttribute name="rightSidebar" />
+
+	<div class="rightbar-overlay"></div>
+
+
+	<!-- Vendor js -->
+	<script src="/assets/js/vendor.min.js"></script>
+
+	<!-- App js-->
+	<script src="/assets/js/app.min.js"></script>
+
+	<!-- Sweet Alerts js -->
+	<script src="/assets/libs/sweetalert2/sweetalert2.all.min.js"></script>
+
+
+
+</body>
+</html>

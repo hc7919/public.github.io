@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.FileTreeMapper">
+	
+	<!-- 일단 파일 리스트 띄워 보기 -->
+<!-- 	<select id="list" parameterType="string" resultType="fileTreeVO"> -->
+<!-- 		SELECT PRO_NO as proNo, FILE_ID as fileId, PARENT_ID as parentId, DEPTH as depth, FILE_NAME as fileName -->
+<!-- 		  FROM FILE_TREE WHERE PRO_NO = #{PRONO} -->
+<!-- 	</select> -->
+
+
+	<select id="list" parameterType="string" resultType="HashMap">
+		SELECT PRO_NO, FILE_ID, PARENT_ID, DEPTH, FILE_NAME
+ 		  FROM FILE_TREE WHERE PRO_NO = #{PRONO} 
+	</select>
+	
+</mapper>

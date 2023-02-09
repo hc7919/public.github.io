@@ -1,0 +1,8 @@
+package kr.or.ddit.controller.project.service;
+
+import kr.or.ddit.vo.GdocsVO;
+
+public interface IGdocsService {
+	public int insertDocs(String porNo);
+
+}

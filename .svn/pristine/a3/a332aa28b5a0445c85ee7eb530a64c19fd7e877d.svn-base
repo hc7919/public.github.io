@@ -1,0 +1,673 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+
+<script>
+kanbanRender();
+
+var mode = "";
+
+function modeChange(arg) {
+    mode = arg;
+    console.log(mode);
+}
+
+var COLORS = {};
+COLORS.LIGHT = "#ECF2F5";
+COLORS.PRIMARY = "#338CD4";
+COLORS.SUCCESS = "#78C350";
+COLORS.INFO = "#45BBE0";
+COLORS.WARNING = "#FF9800";
+COLORS.DANGER = "#F7531E";
+COLORS.DARK = "#333A46";
+COLORS.PURPLE = "#8892D6";
+COLORS.PINK = "#F06292";
+COLORS.SECONDARY = "#6C757D";
+
+updateSelectBar();
+function updateSelectBar() {
+    const selectBar = document.querySelector("#event-select-category");
+    const selectBarDetail = document.querySelector("#detail-select-category");
+    //proNo를 받아와야하는데..일단 전체 불러오기로 하자
+    axios
+      .post("/kanban/categoryList?proNo=" + proNo)
+      .then((res) => {
+            const selectOptions = res.data;
+            console.log(selectOptions);
+            let text = "";
+            let count = 1;
+            for (item of selectOptions) {
+                
+                if (count == 1) {
+                    text += `<option value="\${item.twCategoryNo}" selected>\${item.twCategoryName}</option>`;
+                } else {
+                    text += `<option value="\${item.twCategoryNo}">\${item.twCategoryName}</option>`;
+                }
+                
+                count ++;
+            }
+            
+            selectBar.innerHTML = text;
+            selectBarDetail.innerHTML = text;
+      });
+}
+
+function detailOpen(topWorkNo) {
+    console.log("탑워크 피케이 : ", topWorkNo);
+    const obj = {
+      topWorkNo,
+    }
+    
+    axios
+      .post("/kanban/topWorkDetail", obj)
+      .then((res) => {
+            //console.log(res.data);
+            detailModalOpen(res.data);
+      });
+}
+
+function topWorkUpdate() {
+    const obj = {};
+    obj.topWorkNo = document.querySelector("#topWorkNo-detail").value;
+    obj.topWorkTitle = document.querySelector("#detail-title").value;
+    obj.topWorkContent = document.querySelector("#detail-content").value;
+    obj.topWorkStart = document.querySelector("#topWorkStart-detail").value.replace(" ", "T");
+    obj.topWorkEnd = document.querySelector("#topWorkEnd-detail").value.replace(" ", "T");
+    obj.twCategoryNo = document.querySelector("#detail-select-category").value;
+    
+    console.log(obj);
+    
+    axios
+      .post("/kanban/topWorkUpdate", obj)
+      .then((res) => {
+          //console.log(res);
+          //디테일에서 업데이트 성공 -> 모달 닫고 렌더링
+          detailModalClose();
+          kanbanRender();
+      });
+}
+
+function topWorkDelete() {
+    const obj = {};
+    obj.topWorkNo = document.querySelector("#topWorkNo-detail").value;
+    
+    if (!confirm("정말 삭제하시겠습니까?")) {
+        return;
+    }
+    //console.log(obj);
+    axios
+      .post("/kanban/topWorkDelete", obj)
+      .then((res) => {
+          //console.log(res);
+          //디테일에서 삭제 성공 -> 모달 닫고 렌더링
+          detailModalClose();
+          //kanbanRender();
+          pageTap(currentTap_PH_K);
+      });
+    
+}
+
+function detailModalOpen(topWorkVO) {
+  console.log(topWorkVO);
+  //파라미터로 받은 객체로 값 채우기
+  document.querySelector("#topWorkNo-detail").value = topWorkVO.topWorkNo;
+  document.querySelector("#detail-title").value = topWorkVO.topWorkTitle;
+  document.querySelector("#detail-content").value = topWorkVO.topWorkContent;
+  document.querySelector("#topWorkStart-detail").value = topWorkVO.topWorkStart.replace("T", " ");
+  document.querySelector("#topWorkEnd-detail").value = topWorkVO.topWorkEnd.replace("T", " ");
+  document.querySelector("#detail-select-category").value = topWorkVO.twCategoryNo;
+  
+  
+  document.querySelector("#detail-modal").classList.add("show");
+  document.querySelector("#detail-modal").style.display = "block";
+}
+
+function detailModalClose() {
+  //디테일모달같은 경우엔 굳이 값을 비워줄 필요가 없다.
+  document.querySelector("#detail-modal").classList.remove("show");
+  document.querySelector("#detail-modal").style.display = "none";
+}
+function selectColor(color) {
+  //console.log(color);
+  document.querySelector(
+    "#dropdownMenuButton"
+  ).className = `btn btn-\${color} dropdown-toggle`;
+  const selected = `.color-\${color}`;
+  const fontColor = document.querySelector(selected).innerText;
+  document.querySelector("#dropBox-name").innerText = fontColor;
+
+  //카테고리 추가시 색상코드 같이 보내기주기위한 색상값 저장
+  //console.log(color.toUpperCase());
+  let saveColor = "";
+  if (color.toUpperCase() == "LIGHT") saveColor = COLORS.LIGHT;
+  if (color.toUpperCase() == "PRIMARY") saveColor = COLORS.PRIMARY;
+  if (color.toUpperCase() == "SUCCESS") saveColor = COLORS.SUCCESS;
+  if (color.toUpperCase() == "INFO") saveColor = COLORS.INFO;
+  if (color.toUpperCase() == "WARNING") saveColor = COLORS.WARNING;
+  if (color.toUpperCase() == "DANGER") saveColor = COLORS.DANGER;
+  if (color.toUpperCase() == "DARK") saveColor = COLORS.DARK;
+  if (color.toUpperCase() == "PURPLE") saveColor = COLORS.PURPLE;
+  if (color.toUpperCase() == "PINK") saveColor = COLORS.PINK;
+  if (color.toUpperCase() == "SECONDARY") saveColor = COLORS.SECONDARY;
+
+  document.querySelector("#dropBox-colorCode").value = saveColor;
+  //console.log(document.querySelector("#dropBox-colorCode"));
+}
+
+function selectColorUpdate(color) {
+  //console.log(color);
+  document.querySelector(
+    "#dropdownMenuButton-update"
+  ).className = `btn btn-\${color} dropdown-toggle`;
+  const selected = `.updateColor-\${color}`;
+  const fontColor = document.querySelector(selected).innerText;
+  document.querySelector("#dropBox-name-update").innerText = fontColor;
+
+  //카테고리 추가시 색상코드 같이 보내기주기위한 색상값 저장
+  //console.log(color.toUpperCase());
+  let saveColor = "";
+  if (color.toUpperCase() == "LIGHT") saveColor = COLORS.LIGHT;
+  if (color.toUpperCase() == "PRIMARY") saveColor = COLORS.PRIMARY;
+  if (color.toUpperCase() == "SUCCESS") saveColor = COLORS.SUCCESS;
+  if (color.toUpperCase() == "INFO") saveColor = COLORS.INFO;
+  if (color.toUpperCase() == "WARNING") saveColor = COLORS.WARNING;
+  if (color.toUpperCase() == "DANGER") saveColor = COLORS.DANGER;
+  if (color.toUpperCase() == "DARK") saveColor = COLORS.DARK;
+  if (color.toUpperCase() == "PURPLE") saveColor = COLORS.PURPLE;
+  if (color.toUpperCase() == "PINK") saveColor = COLORS.PINK;
+  if (color.toUpperCase() == "SECONDARY") saveColor = COLORS.SECONDARY;
+
+  document.querySelector("#dropBox-colorCode-update").value = saveColor;
+  //console.log(document.querySelector("#dropBox-colorCode"));
+}
+
+function categoryUpdatePK(twCategoryNo) {
+  //수정버튼 클릭시 인풋히든에 pk 세팅
+  console.log("피케이", twCategoryNo);
+  document.querySelector("#dropBox-twCategoryNo-update").value = twCategoryNo;
+  
+}
+
+function categoryUpdate() {
+    
+  //수정하기 버튼 클릭시 세팅 및 전송
+  const twCategoryName = document.querySelector(
+    "#category-name-update"
+  ).value;
+  console.log("twCategoryName",twCategoryName);
+  const twCategoryColor = document.querySelector(
+    "#dropBox-colorCode-update"
+  ).value;
+  const twCategoryNo = document.querySelector(
+    "#dropBox-twCategoryNo-update"
+  ).value;
+  //업데이트 객체 세팅
+  const obj = {
+    twCategoryName,
+    twCategoryColor,
+    twCategoryNo,
+  };
+  
+  //  오지형  카테고리 이름 수정시 폴더 이름 변경 
+  console.log("카테고리 이전이름 :", beforeCategory);
+  console.log("카테고리 수정이름 :", twCategoryName);
+  console.log("프로젝트 번호 : ", proNo);
+  const fileobj_O = {
+          "beforeCategory" : beforeCategory,
+          "updateCategory" : twCategoryName,
+          "proNo" : proNo
+  } 
+  
+  $.ajax({
+      url : "/updateCategoryFileLocation",
+      type : "POST",
+      data : fileobj_O,
+      success : function(result){
+          console.log(result);
+      }
+  }); // end of ajax
+  
+  //console.log(obj);
+  //업데이트 전송
+  axios.post("/kanban/categoryUpdate", obj).then((res) => {
+    console.log("카테고리 업데이트 성공");
+    kanbanRender();
+    categoryUpdateModalClose();
+  });
+}
+
+
+
+function kanbanRender() {
+  axios
+    .post("/kanban/categoryList?proNo=" + proNo) //실제로는 프로젝트 번호(팀번호)를 넘겨줘야함.
+    .then((response) => {
+      console.log("카테고리", response.data);
+      const json = response.data;
+      //console.log(json);
+      let text = '<div class="col-xl-10">';
+      text += '<div class="parent">';
+      for (item of json) {
+        text += `<div class="container \${item.twCategoryColor}" id="category-\${item.twCategoryNo}">`;
+        text += `     <div class="filtered">\${item.twCategoryName}<button type="button" onclick="categoryUpdatePK(\${item.twCategoryNo})" class="btn btn-soft-secondary waves-effect category-update">`;
+        text += `             수정`;
+        text += `         <button type="button" class="btn btn-soft-secondary waves-effect category-delete"`;
+        text += `                 style="background-color: \${item.twCategoryColor}">`;
+        text += `             X`;
+        text += `         </button>`;
+        text += `     </div>`;
+        text += `</div>`;
+      }
+      text += '</div>';
+      text += '</div>';
+      
+      if (json.length < 1) { //카테고리가 아직 생성되지 않은 프로젝트의 경우
+          text = `<div><h1>생성된 카테고리가 없습니다.</h1></div>`;
+      }
+     
+      document.querySelector(".spa").innerHTML = text;
+    })
+    .then((response) => {
+      topWorkListRender();
+    }) //axios 카테고리 그리기 끝
+    .then((response) => {
+      //카테고리 div 만들어진 후 작업 div들 만들기
+      const containers = document.querySelectorAll(".container");
+      console.log("드래그콘테이너 : ", containers);
+      drag(containers); //드래그를 추가하고나선 재렌더링시 드래그요소들 안그려짐
+
+      //onclick으로 걸면 event객체 못쓴다
+      const btnCategoryDelete = document.querySelectorAll(".category-delete");
+      const btnCategoryUpdate = document.querySelectorAll(".category-update");
+
+      //수정버튼 이벤트 주기
+      for (item of btnCategoryUpdate) {
+        //console.log("수정버튼들", item);
+        //console.log("수정버튼 영역 카테고리 아이디 : ", item.parentNode.parentNode.id);
+        const twCategoryNo = item.parentNode.parentNode.id.split("-")[1];
+        console.log("수정할 카테고리 번호 : ", twCategoryNo);
+
+        item.addEventListener("click", (event) => {
+          categoryUpdateModalOpen();
+        });
+      }
+
+      //삭제버튼 이벤트주기
+      for (item of btnCategoryDelete) {
+        const twCategoryNo = item.parentNode.parentNode.id.split("-")[1]; //여기로 이동
+        //console.log(item);
+        item.addEventListener("click", (event) => {
+          //console.log(event.target.parentNode); //i 태그를 버튼 안에 쓰면 아이콘 눌렀을때 그게 타겟으로 잡힘
+          //카테고리 pk 뽑아내기
+          //console.dir(event.target.parentNode.parentNode.id.split("-")[1]);
+
+          if (!confirm("정말 삭제하시겠습니까?")) {
+            return;
+          }
+
+          const topWorkCategoryVO = {
+            twCategoryNo,
+          };
+
+          axios
+            .post("/kanban/categoryDelete", topWorkCategoryVO)
+            .then((res) => {
+              console.log(res);
+              kanbanRender();
+            });
+        });
+      }
+    });
+} //칸반 렌더 끝
+
+var categoryModalInsert = () => {
+  const twCategoryName = document.querySelector("#category-name").value;
+  const twCategoryColor = document.querySelector("#dropBox-colorCode").value;
+  console.log(twCategoryName);
+  console.log("인서트시 컬러", twCategoryColor);
+
+  const obj = {
+    twCategoryName,
+    twCategoryColor,
+    proNo,
+  };
+
+  axios.post("/kanban/categoryInsert", obj).then((response) => {
+    console.log(response);
+    kanbanRender();
+    categoryModalClose();
+    updateSelectBar();
+  });
+};
+
+//우선 비동기로 목록을 불러와서 각각의 영역에 넣어줘야함
+//DB 연동해서 만든 후에 카테고리를 추가하는 기능을 만들어야함
+
+//피커
+var fp = flatpickr(document.getElementById("birth"), {
+  //'monthSelectorType' : 'static',
+  locale: "ko",
+  enableTime: "true",
+  onValueUpdate: () => {
+    //console.log("업데이트");
+  },
+  onDayCreate: () => {
+    //console.log("크리에이트");
+  },
+});
+var fp2 = flatpickr(document.getElementById("birth2"), {
+  //'monthSelectorType' : 'static',
+  locale: "ko",
+  enableTime: "true",
+  onValueUpdate: () => {
+    //console.log("업데이트");
+  },
+  onDayCreate: () => {
+    //console.log("크리에이트");
+  },
+});
+var fp3 = flatpickr(document.getElementById("topWorkStart-detail"), {
+  //'monthSelectorType' : 'static',
+  locale: "ko",
+  enableTime: "true",
+  onValueUpdate: () => {
+    //console.log("업데이트");
+  },
+  onDayCreate: () => {
+    //console.log("크리에이트");
+  },
+});
+var fp4 = flatpickr(document.getElementById("topWorkEnd-detail"), {
+  //'monthSelectorType' : 'static',
+  locale: "ko",
+  enableTime: "true",
+  onValueUpdate: () => {
+    //console.log("업데이트");
+  },
+  onDayCreate: () => {
+    //console.log("크리에이트");
+  },
+});
+//인서트용 모달
+var btnInsertModalClose = document.querySelector("#btnModalClose");
+var btnInsertModalReset = document.querySelector("#btn-reset-event");
+var btnInsertModalSave = document.querySelector("#btn-save-event");
+
+var insertModalOpen = (from, data) => {
+  //console.log(from, data);
+  if (from == "캘린더") {
+      const defaultTime = "T10:00";
+      
+      const topWorkStart = data.startStr + defaultTime;
+      const topWorkEnd = data.endStr + defaultTime;
+      //console.log(topWorkStart, topWorkEnd);
+      
+      document.querySelector("#birth").value = topWorkStart.replace("T", " ");
+      document.querySelector("#birth2").value = topWorkEnd.replace("T", " ");
+  }
+  console.log("클래스리슽트?", document.querySelector("#event-modal"));
+  document.querySelector("#event-modal").classList.add("show");
+  document.querySelector("#event-modal").style.display = "block";
+};
+
+var insertModalClose = () => {
+  //닫기 전 값 초기화해주기 필요
+  document.querySelector("#event-modal").classList.remove("show");
+  document.querySelector("#event-modal").style.display = "none";
+  //닫을때 입력된 데이터 날려버리기
+  insertModalReset();
+};
+
+var insertModalReset = () => {
+  document.querySelector("#event-title").value = "";
+  document.querySelector("#event-content").value = "";
+  //document.querySelector("#event-select-category").value = "";
+  document.querySelector("#birth").value = "";
+  document.querySelector("#birth2").value = "";
+  document.querySelector("#event-worker").value = "미배정";
+  document.querySelector("#event-file").value = "";
+};
+
+btnInsertModalReset.addEventListener("click", () => {
+  insertModalReset();
+});
+
+btnInsertModalClose.addEventListener("click", () => {
+  insertModalClose();
+});
+
+btnInsertModalSave.addEventListener("click", (event) => {
+  
+  // 일감생성하기 시 처리되는 파일  01/02 오지형
+  var formData_O = new FormData();
+  //const inputFile = document.querySelector("#event-file");
+  var inputFile = $("input[name='uploadFileAjax']");
+  console.log("inputFile : ", inputFile); // <input type="file"> tag
+  var files = inputFile[0].files;
+  console.log("files : ",files);
+  for(var i = 0; i < files.length; i++){
+      formData_O.append("uploadFile",files[i]);   
+   }
+  const twCategoryName = $("#event-select-category option:selected").text();
+  console.log("twCategoryName",twCategoryName);
+  let jsonData = JSON.stringify({ projectId: proNo , fileLocation :twCategoryName });
+  console.log("jsonData :", jsonData);
+  formData_O.append("jsonData", jsonData);    
+  
+  $.ajax({
+      url : '/uploadAjaxAction',
+      processData : false,
+      contentType : false,
+      data : formData_O,
+      type : 'POST',
+      dataType : 'json',
+      success : function(result){
+          console.log("origin result",result);
+      }
+  }); // end of ajax */
+
+  const topWorkTitle = document.querySelector("#event-title").value;
+  const topWorkContent = document.querySelector("#event-content").value;
+  const twCategoryNo = document.querySelector("#event-select-category").value;
+  const topWorkStart = document
+    .querySelector("#birth")
+    .value.replace(" ", "T");
+  const topWorkEnd = document
+    .querySelector("#birth2")
+    .value.replace(" ", "T");
+  const memberId = document.querySelector("#event-worker").value;
+  //console.log("워커 : " + memId); 
+  const obj = {
+    topWorkTitle,
+    topWorkContent,
+    twCategoryNo,
+    topWorkStart,
+    topWorkEnd,
+    proNo,
+    //topWorkState는 기본 0 -> 카테고리 이동시?
+    //topWorkLike도 기본값 0
+    //topWorkFile도 기본값 null인데 마이바티스에서 에러나니깐 서비스단에서 '0'으로 넣어줌.
+    //topWorkProgress도 기본값 0
+  };
+  console.log("작업인서트될놈: ", obj);
+  //axios는 제이슨 직렬화 하지않고 그냥 보내야함.
+  //헤더 설정은 별도로 필요 없다.
+  //const json = JSON.stringify(obj);
+  //const config = {"Content-Type" : "application/json"};
+  //console.log(obj);
+  
+  let topWorkNo = "";
+  
+  axios.post("/kanban/insert", obj)
+  .then((response) => {
+    console.log("new topWorkNo : ", response.data);
+    topWorkNo = response.data;
+    //kanbanRender();
+    pageTap(currentTap_PH_K); //탭을 다시 불러오는 식으로 리렌더링..
+    insertModalClose();
+  })
+  .then((res) => { //인서트 됐으면 관계테이블에 인서트
+      if (memberId == "미배정") {
+          return;
+      }
+      
+      const topWorkRelationVO = {};
+      topWorkRelationVO.memberId = memberId;
+      topWorkRelationVO.topWorkNo = topWorkNo;
+      
+      axios
+        .post("/kanban/topWorkRelationInsert", topWorkRelationVO)
+        .then((res) => {
+          //성공!!! 근데 무조건 추가할게 아니라 조건문으로 담당자 배정 했을때만 인서트해야함
+            console.log(res); 
+        });
+      
+  });
+});
+
+//카테고리 모달(인서트)
+var btnCategoryModalCansel = document.querySelector("#category-cancel");
+
+var categoryModalOpen = () => {
+  document.querySelector("#info-alert-modal").classList.add("show");
+  document.querySelector("#info-alert-modal").style.display = "block";
+};
+
+var categoryModalClose = () => {
+  document.querySelector("#info-alert-modal").classList.remove("show");
+  document.querySelector("#info-alert-modal").style.display = "none";
+};
+//카테고리 모달(업데이트)
+var categoryUpdateModalOpen = (evnet) => {
+  //console.dir(event.target.previousSibling);
+  document.querySelector("#category-name-update").value =
+    event.target.previousSibling.data;
+  console.log("현제 카테고리 이름 : ",event.target.previousSibling.data); // 현제 값 찍기
+  beforeCategory = event.target.previousSibling.data; // 수정전 카테고리 저장 
+  document.querySelector("#category-update-modal").classList.add("show");
+  document.querySelector("#category-update-modal").style.display = "block";
+};
+var categoryUpdateModalClose = () => {
+  document.querySelector("#category-name-update").value = "";
+  document.querySelector("#category-update-modal").classList.remove("show");
+  document.querySelector("#category-update-modal").style.display = "none";
+};
+
+//드래그 아이템들 그리기용
+function topWorkListRender() {
+  axios
+    .post("/kanban/list?proNo=" + proNo)
+    .then((response) => {
+      //console.log(response.data);
+      //여기서 div를 만들어줘야함
+      //일단은 모두 배정된 작업에 넣어버리기
+      const json = response.data;
+      console.log("작업들 : ", response.data);
+
+      let text = "";
+      for (item of json) {
+        console.log(item.topWorkTitle);
+        text = "";
+        text += `<div class="table-responsive draggable" onclick="detailOpen(\${item.topWorkNo})" id="\${item.topWorkNo}" style="margin: 10px;">`;
+        text += `  <table class="table table-borderless mb-0">`;
+        text += `      <thead class="table-active \${item.twCategoryNo}">`;
+        text += `          <tr>`;
+        text += `              <th>\${item.topWorkTitle}</th>`;
+        text += `          </tr>`;
+        text += `      <tbody class="table-light">`;
+        text += `          <tr>`;
+        text += `              <td>\${item.topWorkContent}</td>`;
+        text += `          </tr>`;
+        text += `      </tbody>`;
+        text += `  </table>`;
+        text += `</div>`;
+
+        let categoryId = "#category-" + item.twCategoryNo;
+        //원하는 위치에 인서트해주는(append처럼) 메소드 insertAdjacentHTML(위치, 문자열)
+        //console.log("카테고리디브없다구?", document.querySelector(categoryId)); db..필요한정보만가져와야함
+        
+        document
+          .querySelector(categoryId)
+          .insertAdjacentHTML("beforeend", text);
+      }
+    })
+    .then((res) => {
+      //일단 컬러코드 적용을 억지로라도 해보기
+      //1. thead클래스를 전부 가져온다
+      //2. 클래스명과 pk가 일치하면 색상코드를 넣어준다.
+      console.log(
+        "컬러코드 타겟 : ",
+        document.querySelectorAll(".draggable")
+      );
+      const targets = document.querySelectorAll(".draggable");
+      for (item of targets) {
+        //console.log("노드들");
+        //console.log("타겟부모", item.parentNode.className.split(" ")[1]);
+        let itemColor = item.parentNode.className.split(" ")[1];
+        //console.dir(item.children[0].children[0]); //thead 다가져옴
+        //테이블헤드 색상을 해당 카테고리의 색상으로 변경해준다.
+        item.children[0].children[0].style.backgroundColor = itemColor;
+        //이동이 완료되었을때 굳이 재랜더링은 안해줘도 될거같다.
+        //어차피 본인페이지에도 이동 + 다른사람이 봤을때도 이동 됨.
+      }
+    });
+}
+
+//드래그 이벤트주기용
+function drag(target) {
+  target.forEach((container) => {
+    //인자로 자식 div들을 받음
+    //console.log("드래그왜안돼 : ", container);
+    new Sortable(container, {
+      group: {
+        name: "shared", //이게 같은 Sortable 객체들끼리 이동 가능
+      },
+      swapThreshold: 1,
+      animation: 150,
+      ghostClass: "blue-background-class",
+      //sort: false, 이거 false하면 원래 영역 내에서는 안움직임
+      onChoose: function (event) {
+        //클릭한 아이템
+        //선택한 영역 안에 테이블 목록
+      },
+      filter: ".filtered",
+      onEnd: function (event) {
+        //내려놓았을때!
+        console.log("이동중", event.from.id);
+        //console.log("엔드아이템 : ", event.item.id);
+        const topWorkNo = event.item.id; //내려놓은 아이템 pk번호
+        const beforeTwCategoryNo = event.from.id.split("-")[1]; //도착한 곳 카테고리 pk번호
+        const twCategoryNo = event.to.id.split("-")[1]; //도착한 곳 카테고리 pk번호
+        //여기서 그 영역 div의 id를 가져와야함.
+        //console.log("부모 : ", event.from);
+        //console.log("시작한 부모아이디 : ", event.from.id);
+        //console.log("도착한 부모요소 아이디 : ", event.to.id);//도착한 div영역
+        const changeColor = event.to.className.split(" ")[1]; //도착한 div영역 컬러
+        //console.dir(event.item.firstElementChild.children[0]); //thead
+        event.item.firstElementChild.children[0].style.backgroundColor =
+          changeColor;
+
+        const obj = {
+          topWorkNo,
+          twCategoryNo,
+        };
+
+        const map = {
+          topWorkNo,
+          beforeTwCategoryNo,
+          twCategoryNo,
+        };z
+
+        axios.post("/kanban/topWorkMove", obj).then((res) => {
+          logInsert(map); //topWorkNo로 프로젝트번호 따와야함.
+        });
+      },
+    });
+  });
+}
+
+function logInsert(map) {
+  axios.post("/kanban/logInsert", map).then((res) => {
+    console.log(res);
+  });
+}
+
+</script>

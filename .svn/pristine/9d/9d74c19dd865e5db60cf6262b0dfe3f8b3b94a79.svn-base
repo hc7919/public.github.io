@@ -1,0 +1,21 @@
+package kr.or.ddit.mapper;
+
+import java.util.List;
+import java.util.Map;
+
+import kr.or.ddit.vo.TopWorkVO;
+
+
+public interface CalendarMapper {
+
+    public List<TopWorkVO> list();
+
+    public void insert(TopWorkVO topWorkVO) throws Exception;
+    public void insertRelation(TopWorkVO topWorkVO) throws Exception;
+
+    public void updateMove(Map<String, String> map) throws Exception;
+
+    public void update(Map<String, String> map) throws Exception;
+    
+    
+}

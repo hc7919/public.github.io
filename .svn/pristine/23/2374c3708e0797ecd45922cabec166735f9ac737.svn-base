@@ -1,0 +1,24 @@
+package kr.or.ddit.controller.upload;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Service;
+
+import kr.or.ddit.mapper.FileTreeMapper;
+import kr.or.ddit.vo.FileTreeVO;
+
+@Service
+public class FileTreeServiceImpl implements IFileTreeService {
+	
+	@Inject
+	private FileTreeMapper mapper;
+	
+	
+	@Override
+	public List<FileTreeVO> list(String proNo) throws Exception {
+		return mapper.list(proNo);
+	}
+
+}

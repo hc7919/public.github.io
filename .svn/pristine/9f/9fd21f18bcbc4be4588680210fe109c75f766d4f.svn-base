@@ -1,0 +1,53 @@
+package kr.or.ddit.controller.devIn.service;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Service;
+
+import kr.or.ddit.mapper.DevInMapper;
+import kr.or.ddit.vo.DevInVO;
+
+@Service
+public class IDeveInServiceImpl implements IDeveInService {
+
+	@Inject
+	private DevInMapper mapper;
+
+	@Override
+	public void insert(DevInVO devInVO) throws Exception {
+		mapper.insert(devInVO);
+	}
+
+	@Override
+	public List<DevInVO> selectList() throws Exception {
+		return mapper.selectList();
+	}
+
+	@Override
+	public DevInVO select(String dviNo) throws Exception {
+		DevInVO devInVO = mapper.select(dviNo);
+		// 확인
+		return devInVO;
+	}
+
+	@Override
+	public int update(DevInVO devInVO) throws Exception {
+		return mapper.update(devInVO);
+	}
+
+	@Override
+	public int delete(String dviNo) throws Exception {
+		return mapper.delete(dviNo);
+	}
+
+	@Override
+	public List<DevInVO> search(String dviTitle) throws Exception {
+		return mapper.search(dviTitle);
+	}
+	
+	
+	
+	
+}

@@ -1,0 +1,128 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<body>
+
+	<div class="content-page">
+		<div class="content">
+
+			<!-- Start Content-->
+			<div class="container-fluid">
+
+				<!-- start page title -->
+				<div class="row">
+					<div class="col-12">
+						<div class="page-title-box">
+							<h4 class="page-title">DEVIN</h4>
+							<div>
+								<ol class="breadcrumb m-0">
+									<li class="breadcrumb-item"><a href="javascript: void(0);">BOAT-IN</a></li>
+									<li class="breadcrumb-item active">DEVIN</li>
+								</ol>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end page title -->
+
+				<div class="row">
+					<div class="col-12">
+						<div class="card">
+							<div class="card-body">
+
+								<h5 class="mt-0">개발자 지식IN</h5>
+								<p class="sub-header font-13">Inline edit like a spreadsheet on two columns only and without identifier column.</p>
+								<div class="table-responsive">
+									<div class="inbox-widget" data-simplebar style="max-height: 600px;">
+										<table class="table mb-0">
+											<thead>
+												<tr>
+													<th>#</th>
+													<th>제목</th>
+													<th>작성자</th>
+													<th>작성일</th>
+													<th>조회수</th>
+												</tr>
+											</thead>
+
+											<tbody>
+												<c:choose>
+													<c:when test="${empty devinList }">
+														<tr>
+															<td colspan="5">조회하신 게시글이 존재하지 않습니다.</td>
+														</tr>
+													</c:when>
+													<c:otherwise>
+														<c:forEach items="${devinList }" var="devin">
+															<tr>
+																<td>${devin.dviNo }</td>
+																<td><a href="/devin/detail?dviNo=${devin.dviNo}">${devin.dviTitle }</a></td>
+																<td>${devin.memberId }</td>
+																<td>${devin.dviDate }</td>
+																<td>${devin.dviHit }</td>
+															</tr>
+														</c:forEach>
+													</c:otherwise>
+												</c:choose>
+											</tbody>
+										</table>
+									</div><!-- end .table-responsive-->
+								</div><!-- end card-body -->
+								<br>
+							</div><!-- end card -->
+						</div><!-- end col -->
+						<button type="button" class="btn btn-primary" id="newBtn">등록</button>
+					</div><!-- end row -->
+				</div><!-- container -->
+			</div><!-- content -->
+
+			<!-- Footer Start -->
+			<footer class="footer">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-6">
+							<script>
+								document.write(new Date().getFullYear())
+							</script>
+							&copy; Codefox theme by <a href="">Coderthemes</a>
+						</div>
+						<div class="col-md-6">
+							<div class="text-md-end footer-links d-none d-sm-block">
+								<a href="javascript:void(0);">About Us</a> <a href="javascript:void(0);">Help</a> <a href="javascript:void(0);">Contact Us</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</footer>
+			<!-- end Footer -->
+
+		</div>
+	</div>
+</body>
+
+<!-- Right bar overlay-->
+<div class="rightbar-overlay"></div>
+
+<!-- Table Editable plugin-->
+<script src="/assets/libs/jquery-tabledit/jquery.tabledit.min.js"></script>
+
+<!-- Table editable init-->
+<script src="/assets/js/pages/tabledit.init.js"></script>
+
+<script type="text/javascript">
+	$(function() {
+		var newBtn = $("#newBtn");
+		// 	var searchForm = $("#searchForm");
+		// 	var pagingArea = $("#pagingArea");
+
+		newBtn.on("click", function() {
+			location.href = "/devin/insert";
+		});
+
+		// 	pagingArea.on("click", "a", function(event){
+		// 		event.preventDefault();
+		// 		var pageNo = $(this).data("page");
+		// 		searchForm.find("#page").val(pageNo);
+		// 		searchForm.submit();
+		// 	});
+	});
+</script>

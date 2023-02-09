@@ -1,0 +1,18 @@
+package kr.or.ddit.mapper;
+
+import java.util.List;
+
+import kr.or.ddit.vo.DevInVO;
+
+public interface DevInMapper {
+	public List<DevInVO> selectList();	
+	
+	public DevInVO select(String memberId);	
+	
+	public int insert(DevInVO devInVO);
+	
+	public int update(DevInVO devInVO);
+	
+	public int delete(DevInVO devInVO);
+	
+}

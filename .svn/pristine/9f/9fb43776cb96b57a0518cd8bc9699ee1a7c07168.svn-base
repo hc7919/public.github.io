@@ -1,0 +1,15 @@
+package kr.or.ddit.vo;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@ToString
+public class GdocsVO {
+	String GDOC_NO;
+	String PRO_NO;
+	String SHEET_ID;
+	String WORD_ID;
+}

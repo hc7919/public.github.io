@@ -1,0 +1,12 @@
+package kr.or.ddit.vo;
+
+import lombok.Data;
+
+@Data
+public class ProjectJoinStateVO {
+    private String proJSNo;
+    private String proNo;
+    private String memberId;
+    private String proAuth;
+    private String proJoinState;
+}

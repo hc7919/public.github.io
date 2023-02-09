@@ -1,0 +1,26 @@
+package kr.or.ddit.mapper;
+
+import java.util.List;
+
+import kr.or.ddit.vo.DevInVO;
+
+public interface DevInMapper {
+	// 게시글 추가
+	public void insert(DevInVO devInVO) throws Exception;
+	
+	// 게시글 출력
+	public List<DevInVO> selectList() throws Exception;	
+	
+	// 게시글 번호 선택
+	public DevInVO select(String dviNo) throws Exception;	
+	
+	// 게시글 수정
+	public int update(DevInVO devInVO) throws Exception;
+	
+	// 게시글 삭제
+	public int delete(String dviNo) throws Exception;
+	
+	// 게시글 검색 제목
+	public List<DevInVO> search(String dviTitle) throws Exception;
+	
+}

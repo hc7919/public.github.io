@@ -1,0 +1,1086 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
+<!-- Topbar Start -->
+<!-- jquery -->
+<!-- <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script> -->
+<style>
+.ag-theme-alpine {
+    --ag-header-background-color: #FDE986;
+    --ag-background-color: RGB(253, 248, 200);
+    --ag-odd-row-background-color: RGB(253, 248, 200);
+    --ag-foreground-color: black;
+    
+}
+</style>
+<div class="navbar-custom">
+    <div class="container-fluid">
+        <ul class="list-unstyled topnav-menu float-end mb-0">
+
+            <li class="d-none d-lg-block">
+                <form class="app-search">
+                    <div class="app-search-box dropdown">
+                        <div class="input-group">
+                            <input type="search" class="form-control" placeholder="Search..." id="top-search">
+                            <button class="btn input-group-text" type="submit">
+                                <i class="fe-search"></i>
+                            </button>
+                        </div>
+                        <div class="dropdown-menu dropdown-lg" id="search-dropdown">
+                            <!-- item-->
+                            <div class="dropdown-header noti-title">
+                                <h6 class="text-overflow text-uppercase">Recent Searches</h6>
+                            </div>
+
+                            <div class="g-3 px-2 pb-2">
+                                <a href="#!" class="btn btn-sm rounded-pill btn-light">profile <i class="fe-search ms-1"></i></a>
+                                <a href="#!" class="btn btn-sm rounded-pill btn-light">yarn <i class="fe-search ms-1"></i></a>
+                            </div>
+            
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <i class="fe-home me-1"></i>
+                                <span>Analytics Report</span>
+                            </a>
+            
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <i class="fe-aperture me-1"></i>
+                                <span>How can I help you?</span>
+                            </a>
+                            
+                            <!-- item-->
+                            <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <i class="fe-settings me-1"></i>
+                                <span>User profile settings</span>
+                            </a>
+
+                            <!-- item-->
+                            <div class="dropdown-header noti-title">
+                                <h6 class="text-overflow mb-2 text-uppercase">Users</h6>
+                            </div>
+
+                            <div class="notification-list">
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <div class="d-flex align-items-start">
+                                        <img class="d-flex me-2 rounded-circle" src="${pageContext.request.contextPath }/resources/dist/assets/images/users/user-2.jpg" alt="Generic placeholder image" height="32">
+                                        <div class="w-100">
+                                            <h5 class="m-0 font-14">Erwin E. Brown</h5>
+                                            <span class="font-12 mb-0">UI Designer</span>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <div class="d-flex align-items-start">
+                                        <img class="d-flex me-2 rounded-circle" src="${pageContext.request.contextPath }/resources/dist/assets/images/users/user-5.jpg" alt="Generic placeholder image" height="32">
+                                        <div class="w-100">
+                                            <h5 class="m-0 font-14">Jacob Deo</h5>
+                                            <span class="font-12 mb-0">Developer</span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+            
+                        </div>  
+                    </div>
+                </form>
+            </li>
+    
+            <li class="dropdown d-inline-block d-lg-none">
+                <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                    <i class="fe-search noti-icon"></i>
+                </a>
+                <div class="dropdown-menu dropdown-lg dropdown-menu-end p-0">
+                    <form class="p-3">
+                        <input type="text" class="form-control" placeholder="Search ..." aria-label="Recipient's username">
+                    </form>
+                </div>
+            </li>
+    
+            <li class="dropdown d-none d-lg-inline-block">
+                <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-toggle="fullscreen" href="#">
+                    <i class="fe-maximize noti-icon"></i>
+                </a>
+            </li>
+            <li class="dropdown d-none d-lg-inline-block">
+                <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-toggle="" href="#">
+                    <button class="btn btn-primary mt-2 mt-md-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                    🎁Widget           
+                    </button>
+                </a>
+            </li>
+    
+            <li class="dropdown d-none d-lg-inline-block topbar-dropdown">
+                <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                    <img src="${pageContext.request.contextPath }/resources/dist/assets/images/flags/us.jpg" alt="user-image" height="16">
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+    
+                    <!-- item-->
+                    <a href="javascript:void(0);" class="dropdown-item">
+                        <img src="${pageContext.request.contextPath }/resources/dist/assets/images/flags/germany.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">German</span>
+                    </a>
+    
+                    <!-- item-->
+                    <a href="javascript:void(0);" class="dropdown-item">
+                        <img src="${pageContext.request.contextPath }/resources/dist/assets/images/flags/italy.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Italian</span>
+                    </a>
+    
+                    <!-- item-->
+                    <a href="javascript:void(0);" class="dropdown-item">
+                        <img src="${pageContext.request.contextPath }/resources/dist/assets/images/flags/spain.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Spanish</span>
+                    </a>
+    
+                    <!-- item-->
+                    <a href="javascript:void(0);" class="dropdown-item">
+                        <img src="${pageContext.request.contextPath }/resources/dist/assets/images/flags/russia.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Russian</span>
+                    </a>
+    
+                </div>
+            </li>
+            
+            <li class="dropdown notification-list topbar-dropdown">
+                <a class="nav-link dropdown-toggle waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                    <i class="fe-bell noti-icon"></i>
+                    <span class="badge bg-danger rounded-circle noti-icon-badge">5</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end dropdown-lg">
+    
+                    <!-- item-->
+                    <div class="dropdown-item noti-title">
+                        <h5 class="m-0">
+                            <span class="float-end">
+                                <a href="" class="text-dark">
+                                    <small>Clear All</small>
+                                </a>
+                            </span>Notification
+                        </h5>
+                    </div>
+    
+                    <div class="noti-scroll" data-simplebar>
+    
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item active">
+                            <div class="notify-icon">
+                                <img src="${pageContext.request.contextPath }/resources/dist/assets/images/users/user-1.jpg" class="img-fluid rounded-circle" alt="" /> </div>
+                            <p class="notify-details">Cristina Pride</p>
+                            <p class="text-muted mb-0 user-msg">
+                                <small>Hi, How are you? What about our next meeting</small>
+                            </p>
+                        </a>
+    
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <div class="notify-icon bg-primary">
+                                <i class="mdi mdi-comment-account-outline"></i>
+                            </div>
+                            <p class="notify-details">Caleb Flakelar commented on Admin
+                                <small class="text-muted">1 min ago</small>
+                            </p>
+                        </a>
+    
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <div class="notify-icon">
+                                <img src="${pageContext.request.contextPath }/resources/dist/assets/images/users/user-4.jpg" class="img-fluid rounded-circle" alt="" /> </div>
+                            <p class="notify-details">Karen Robinson</p>
+                            <p class="text-muted mb-0 user-msg">
+                                <small>Wow ! this admin looks good and awesome design</small>
+                            </p>
+                        </a>
+    
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <div class="notify-icon bg-warning">
+                                <i class="mdi mdi-account-plus"></i>
+                            </div>
+                                <small class="text-muted">5 hours ago</small>
+                            </p>
+                        </a>
+    
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <div class="notify-icon bg-info">
+                                <i class="mdi mdi-comment-account-outline"></i>
+                            </div>
+                            <p class="notify-details">Caleb Flakelar commented on Admin
+                                <small class="text-muted">4 days ago</small>
+                            </p>
+                        </a>
+    
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item">
+                            <div class="notify-icon bg-secondary">
+                                <i class="mdi mdi-heart"></i>
+                            </div>
+                            <p class="notify-details">Carlos Crouch liked
+                                <b>Admin</b>
+                                <small class="text-muted">13 days ago</small>
+                            </p>
+                        </a>
+                    </div>
+    
+                    <!-- All-->
+                    <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
+                        View all
+                        <i class="fe-arrow-right"></i>
+                    </a>
+    
+                </div>
+            </li>
+    
+            <li class="dropdown notification-list topbar-dropdown">
+                <a class="nav-link dropdown-toggle nav-user me-0 waves-effect waves-light" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                    <c:if test="${empty memberVO.memberPic }">
+                    	<img src="${pageContext.request.contextPath }/resources/dist/assets/images/users/blank_progile.png" alt="user-image" class="rounded-circle">
+                    </c:if>
+                    <c:if test="${not empty memberVO.memberPic }">
+	                    <img src="${pageContext.request.contextPath }${memberVO.memberPic}" alt="user-image" class="rounded-circle">
+                    </c:if>
+                    <span class="pro-user-name ms-1">
+                       ${memberVO.memberName } <i class="mdi mdi-chevron-down"></i> 
+                    </span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end profile-dropdown ">
+                    <!-- item-->
+                    <div class="dropdown-header noti-title">
+                        <h6 class="text-overflow m-0">Welcome !</h6>
+                    </div>
+    
+                    <!-- item-->
+                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                        <i class="fe-user"></i>
+                        <span>My Account</span>
+                    </a>
+    
+                    <!-- item-->
+                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                        <i class="fe-settings"></i>
+                        <span>Settings</span>
+                    </a>
+    
+                    <!-- item-->
+                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                        <i class="fe-lock"></i>
+                        <span>Lock Screen</span>
+                    </a>
+    
+                    <div class="dropdown-divider"></div>
+    
+                    <!-- item-->
+                    <a href="/logout" class="dropdown-item notify-item" onclick="logout_H();">
+                        <i class="fe-log-out"></i>
+                        <span>Logout</span>
+                    </a>
+    
+                </div>
+            </li>
+    
+            <li class="dropdown notification-list">
+                <a href="javascript:void(0);" class="nav-link right-bar-toggle waves-effect waves-light">
+                    <i class="fe-settings noti-icon"></i>
+                </a>
+            </li>
+    
+        </ul>
+    
+        <!-- LOGO -->
+        <div class="logo-box">
+            <a href="index.html" class="logo logo-dark text-center">
+                <span class="logo-sm">
+                    <img src="${pageContext.request.contextPath }/resources/dist/assets/images/logo-sm.png" alt="" height="22">
+                    <!-- <span class="logo-lg-text-light">Codefox</span> -->
+                </span>
+                <span class="logo-lg">
+                    <img src="${pageContext.request.contextPath }/resources/dist/assets/images/logo-dark.png" alt="" height="20">
+                    <!-- <span class="logo-lg-text-light">U</span> -->
+                </span>
+            </a>
+    
+            <a href="index.html" class="logo logo-light text-center">
+                <span class="logo-sm">
+                    <img src="${pageContext.request.contextPath }/resources/dist/assets/images/logo-sm.png" alt="" height="22">
+                </span>
+                <span class="logo-lg">
+                    <img src="${pageContext.request.contextPath }/resources/dist/assets/images/logo-light.png" alt="" height="20">
+                </span>
+            </a>
+        </div>
+
+		<ul
+			class="list-unstyled topnav-menu topnav-menu-left m-0">
+			<li>
+				<button class="button-menu-mobile waves-effect waves-light">
+					<i class="fe-menu"></i>
+				</button>
+			</li>
+
+			<li>
+				<!-- Mobile menu toggle (Horizontal Layout)--> <a
+				class="navbar-toggle nav-link" data-bs-toggle="collapse"
+				data-bs-target="#topnav-menu-content">
+					<div class="lines">
+						<span></span> <span></span> <span></span>
+					</div>
+			</a> <!-- End mobile menu toggle-->
+			</li>
+
+			<li class="dropdown d-none d-xl-block"><a
+				class="nav-link dropdown-toggle waves-effect waves-light"
+				data-bs-toggle="dropdown" href="#" role="button"
+				aria-haspopup="false" aria-expanded="false"> Create New <i
+					class="mdi mdi-chevron-down"></i>
+			</a>
+				<div class="dropdown-menu">
+					<!-- item-->
+					<a href="javascript:void(0);" class="dropdown-item"> <i
+						class="fe-briefcase me-1"></i> <span>New Projects</span>
+					</a>
+
+					<!-- item-->
+					<a href="javascript:void(0);" class="dropdown-item"> <i
+						class="fe-user me-1"></i> <span>Create Users</span>
+					</a>
+
+					<!-- item-->
+					<a href="javascript:void(0);" class="dropdown-item"> <i
+						class="fe-bar-chart-line- me-1"></i> <span>Revenue Report</span>
+					</a>
+
+					<!-- item-->
+					<a href="javascript:void(0);" class="dropdown-item"> <i
+						class="fe-settings me-1"></i> <span>Settings</span>
+					</a>
+
+					<div class="dropdown-divider"></div>
+
+					<!-- item-->
+					<a href="javascript:void(0);" class="dropdown-item"> <i
+						class="fe-headphones me-1"></i> <span>Help & Support</span>
+					</a>
+
+				</div></li>
+
+			<li class="dropdown dropdown-mega d-none d-xl-block"><a
+				class="nav-link dropdown-toggle waves-effect waves-light"
+				data-bs-toggle="dropdown" href="#" role="button"
+				aria-haspopup="false" aria-expanded="false"> Mega Menu <i
+					class="mdi mdi-chevron-down"></i>
+			</a>
+				<div class="dropdown-menu dropdown-megamenu">
+					<div class="row">
+						<div class="col-sm-8">
+
+							<div class="row">
+								<div class="col-md-4">
+									<h5 class="text-dark mt-0">UI Components</h5>
+									<ul class="list-unstyled megamenu-list">
+										<li><a href="javascript:void(0);">Widgets</a></li>
+										<li><a href="javascript:void(0);">Nestable List</a></li>
+										<li><a href="javascript:void(0);">Range Sliders</a></li>
+										<li><a href="javascript:void(0);">Masonry Items</a></li>
+										<li><a href="javascript:void(0);">Sweet Alerts</a></li>
+										<li><a href="javascript:void(0);">Treeview Page</a></li>
+										<li><a href="javascript:void(0);">Tour Page</a></li>
+									</ul>
+								</div>
+
+								<div class="col-md-4">
+									<h5 class="text-dark mt-0">Applications</h5>
+									<ul class="list-unstyled megamenu-list">
+										<li><a href="javascript:void(0);">eCommerce Pages</a></li>
+										<li><a href="javascript:void(0);">CRM Pages</a></li>
+										<li><a href="javascript:void(0);">Email</a></li>
+										<li><a href="javascript:void(0);">Calendar</a></li>
+										<li><a href="javascript:void(0);">Team Contacts</a></li>
+										<li><a href="javascript:void(0);">Task Board</a></li>
+										<li><a href="javascript:void(0);">Email Templates</a></li>
+									</ul>
+								</div>
+
+								<div class="col-md-4">
+									<h5 class="text-dark mt-0">Extra Pages</h5>
+									<ul class="list-unstyled megamenu-list">
+										<li><a href="javascript:void(0);">Left Sidebar with
+												User</a></li>
+										<li><a href="javascript:void(0);">Menu Collapsed</a></li>
+										<li><a href="javascript:void(0);">Small Left Sidebar</a>
+										</li>
+										<li><a href="javascript:void(0);">New Header Style</a></li>
+										<li><a href="javascript:void(0);">Search Result</a></li>
+										<li><a href="javascript:void(0);">Gallery Pages</a></li>
+										<li><a href="javascript:void(0);">Maintenance &
+												Coming Soon</a></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="text-center mt-3">
+								<h3 class="text-dark">Special Discount Sale!</h3>
+								<h4>Save up to 70% off.</h4>
+								<button class="btn btn-primary rounded-pill mt-3">Download
+									Now</button>
+							</div>
+						</div>
+					</div>
+
+				</div></li>
+		</ul>
+		<div class="clearfix"></div>
+    </div>
+</div>
+<!-- end Topbar -->
+
+<!-- 위젯부분 -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasRightLabel">My Widget</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div> <!-- end offcanvas-header-->
+
+    <div class="offcanvas-body">
+        <div id="widget-time"></div>
+        <div>
+	        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#bs-example-modal-lg"> + </button>
+		    <button type="button" id="resetWidget" class="btn btn-danger waves-effect waves-light"> - </button>
+	    </div>
+		    <div 
+		      class="container-widget-delete" 
+		      id="dustbin" 
+		      style="width: 100%; height: 150px; background-color: #ECF2F5; text-align: center;">
+		      <h3 class="">Dustbin</h3>
+		    </div>
+        <div class="card" id="icon-widget"> <!--  style="display: flex; flex-direction: row;" -->
+            <div class="card-body">
+                <h4 class="header-title">나만의 위젯을 구성하세요!</h4>
+            </div>
+           <div id="widget-myList" class="container-widget"></div>
+           
+        </div>
+       
+        <div>
+        </div>
+    </div> <!-- end offcanvas-body-->
+</div> <!-- end offcanvas-->
+
+<!-- 위젯 추가 모달 -->
+<!--  Modal content for the Large example -->
+<div class="modal fade" id="bs-example-modal-lg" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Widget List</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="widget-list"><!-- 위젯 리스트들 출력해주기 --></div>
+                <div>
+	                <button type="button" id="addWidget" class="btn btn-success waves-effect waves-light" data-bs-dismiss="modal" aria-label="Close">Add Widget</button>
+	                <button type="button" id="" class="btn btn-danger waves-effect waves-light" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- 드래그 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+
+<!-- AG Grid -->
+<script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script> 
+<!-- ApexChart -->
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<!-- axios -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+//로그인시 memberVO 객체가 local에 저장됩니다. topbar에서 활용하세요
+//위젯 선택리스트 모달에 뿌리기
+
+console.log('${memberVO.memberId}'+  '${memberVO}');
+localStorage.setItem('id','${memberVO.memberId}');
+localStorage.setItem('token','${memberVO.memberToken}');
+localStorage.setItem('pic','${memberVO.memberPic}');
+var memberId = localStorage.getItem('id');
+var memberToken = localStorage.getItem('token');
+
+
+
+/* 로컬스토리지 비어있으면 일단 초기화 */
+window.addEventListener("DOMContentLoaded", (event) => {
+	memberId = localStorage.getItem('id');
+	memberToken = localStorage.getItem('token');
+	memberPic = localStorage.getItem('pic');
+	console.log(memberPic)
+	
+	if (memberId == null || memberId== '') {
+		localStorage.removeItem('id');
+	}else if (memberToken == null || memberToken == ''){
+		localStorage.removeItem('token');
+	}else if (memberPic == null || memberPic == ''){
+		localStorage.removeItem('pic');
+	}
+    console.log("DOMContentLoaded");
+});
+
+	/* 로그아웃과 로컬스토리지 삭제 */
+function logout_H(){
+	localStorage.removeItem('id');
+	localStorage.removeItem('token');
+	localStorage.removeItem('pic');
+}
+
+	
+////////////////// 위젯 관련 - 김진호
+
+//렌더링 함수
+renderWidgetList_K(); //성공
+renderWidgetBar_K(); //성공
+
+var btnAddWidget_K = document.querySelector("#addWidget");
+var btnResetWidget_K = document.querySelector("#resetWidget");
+
+/* 날씨 API 시작 */
+var API_KEY_WEATHER = "26329357974be09d714c1296fe958784";
+function onGeoOk(position) {
+    const lat = position.coords.latitude; //user의 위도
+    const lon = position.coords.longitude; //user의 경도
+    const url = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon="
+                 + lon + "&appid=" + API_KEY_WEATHER + "&units=metric";
+            
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            //console.log(data.name, data.weather[0].main);
+            const weather = document.querySelector("#widget-weather span:first-child");
+            const city = document.querySelector("#widget-weather span:last-child");
+            weather.innerHTML = "<h2>날씨 🌞  " + data.weather[0].main + " / 🌡" +data.main.temp + "°C</h2>";
+            city.innerHTML = "<h2>접속 지역 🌍" + data.name + "</h2>";
+        });
+}
+
+function onGeoError() {
+    alert("Can't find you. No weater for you.");
+}
+/* 날씨 끝 */
+
+/* 시계 API 시작 */
+function getClock() {
+    const date = new Date();
+    const hours = String( date.getHours() ).padStart(2, "0");
+    const minutes = String( date.getMinutes() ).padStart(2, "0");
+    const seconds = String( date.getSeconds() ).padStart(2, "0");
+    const clock = document.querySelector("#widget-time");
+    clock.innerHTML = `<h4>현재 시간 : \${hours } : \${minutes} : \${seconds}</h4>`;
+}
+
+getClock();
+setInterval(getClock, 1000);
+/* 시계 끝 */
+
+// AG GRID API 시작
+var columnDefs = [
+	  {headerName: "Title", field: "title"},
+	  {headerName: "Date", field: "date"},
+	];
+// specify the data
+var rowData = [
+  {title: "메모장임", date: "오늘"},
+  {title: "메모장임", date: "오늘"},
+  {title: "메모장임", date: "오늘"},
+  {title: "메모장임", date: "오늘"},
+  {title: "메모장임", date: "오늘"},
+  {title: "메모장임", date: "오늘"},
+  {title: "메모장임", date: "오늘"},
+  {title: "메모장임", date: "오늘"},
+  {title: "메모장임", date: "오늘"},
+  {title: "메모장임", date: "오늘"},
+  {title: "메모장임", date: "오늘"},
+  {title: "메모장임", date: "오늘"},
+];
+// let the grid know which columns and what data to use
+var gridOptions = {
+	columnDefs: columnDefs,
+       rowData: rowData,
+       defaultColDef: {
+         // 기본적으로 컬럼에 적용할 옵션 선택
+         sortable: false,
+         filter: true,
+         // resizable:true,
+         editable: false, // 보통 grid처럼 한번에 많은 데이터를 보여주는 경우 view로만 사용하고 수정/삭제는 별도로 처리함
+       },
+       pagination: true,
+       statusBar: false,
+       // paginationAutoPageSize:true,
+       enableColResize: true,
+       paginationPageSize: 6,
+       localeText: "작성된 메모가 없습니다.",
+       onCellClicked: (merong) => alert("안녕안녕! 나는 " + merong.data.name),
+     };
+
+// setup the grid after the page has finished loading
+// AG GRID 끝
+      
+//차트 API
+//차트 옵션
+var optionsProjectChart_K = {
+  series: [
+	  {
+	    name: '진행도',
+	    data: [
+	      {
+	        x: '플젝1',
+	        y: 12,
+	        goals: [
+	          {
+	            name: '마감기한',
+	            value: 14,
+	            strokeWidth: 2,
+	            strokeDashArray: 2,
+	            strokeColor: 'red'
+	          }
+	        ]
+	      },
+	      {
+	        x: '플젝2',
+	        y: 44,
+	        goals: [
+	          {
+	            name: '마감기한',
+	            value: 54,
+	            strokeWidth: 5,
+	            strokeHeight: 10,
+	            strokeColor: 'red'
+	          }
+	        ]
+	      },
+	      {
+	        x: '플젝3',
+	        y: 54,
+	        goals: [
+	          {
+	            name: '마감기한',
+	            value: 52,
+	            strokeWidth: 10,
+	            strokeHeight: 0,
+	            strokeLineCap: 'round',
+	            strokeColor: 'red'
+	          }
+	        ]
+	      },
+	    ]
+	  }
+	],
+chart: {
+height: 200,
+	type: 'bar'
+	},
+	plotOptions: {
+	  bar: {
+	    horizontal: true,
+	  }
+	},
+	colors: ['#00E396'],
+	dataLabels: {
+	  formatter: function(val, opt) {
+	    const goals =
+	      opt.w.config.series[opt.seriesIndex].data[opt.dataPointIndex]
+	        .goals
+	
+	    if (goals && goals.length) {
+	      return `${val} / ${goals[0].value}`
+	    }
+	    return val
+	  }
+	},
+	legend: {
+	  show: true,
+	  showForSingleSeries: true,
+	  customLegendItems: ['진행도', '마감일'],
+	  markers: {
+	    fillColors: ['#00E396', 'red']
+	  }
+	}
+};
+//차트-프로젝트 끝
+//차트-나의 작업 시작
+var optionsMyChart_K = {
+  series: [
+  {
+    data: [
+      {
+        x: 'Analysis',
+        y: [
+          new Date('2019-02-27').getTime(),
+          new Date('2019-03-04').getTime()
+        ],
+        fillColor: '#008FFB'
+      },
+      {
+        x: 'Design',
+        y: [
+          new Date('2019-03-04').getTime(),
+          new Date('2019-03-08').getTime()
+        ],
+        fillColor: '#00E396'
+      },
+      {
+        x: 'Coding',
+        y: [
+          new Date('2019-03-07').getTime(),
+          new Date('2019-03-10').getTime()
+        ],
+        fillColor: '#775DD0'
+      },
+      {
+        x: 'Testing',
+        y: [
+          new Date('2019-03-08').getTime(),
+          new Date('2019-03-12').getTime()
+        ],
+        fillColor: '#FEB019'
+      },
+      {
+        x: 'Deployment',
+        y: [
+          new Date('2019-03-12').getTime(),
+          new Date('2019-03-17').getTime()
+        ],
+        fillColor: '#FF4560'
+      }
+    ]
+  }
+],
+  chart: {
+  height: 200,
+  type: 'rangeBar'
+},
+plotOptions: {
+  bar: {
+    horizontal: true,
+    distributed: true,
+    dataLabels: {
+      hideOverflowingLabels: false
+    }
+  }
+},
+dataLabels: {
+  enabled: true,
+  formatter: function(val, opts) {
+    var label = opts.w.globals.labels[opts.dataPointIndex]
+    var a = moment(val[0])
+    var b = moment(val[1])
+    var diff = b.diff(a, 'days')
+    return label + ': ' + diff + (diff > 1 ? ' days' : ' day')
+  },
+  style: {
+    colors: ['#f3f4f5', '#fff']
+  }
+},
+xaxis: {
+  type: 'datetime'
+},
+yaxis: {
+  show: false
+},
+grid: {
+  row: {
+    colors: ['#f3f4f5', '#fff'],
+    opacity: 1
+  }
+}
+};
+
+//오프캔버스
+function offCanvasListener(offCanvasId) {
+  let myOffCanvas = document.getElementById(offCanvasId);
+
+  const hideCanvas = () => {
+    let openedCanvas = bootstrap.Offcanvas.getInstance(myOffCanvas);
+    openedCanvas.hide();
+    event.target.removeEventListener('mouseleave', hideCanvas);
+  }
+  const listenToMouseLeave = (event) => {
+    event.target.addEventListener('mouseleave', hideCanvas);
+  }
+  
+  myOffCanvas.addEventListener('shown.bs.offcanvas', listenToMouseLeave);
+}
+
+//offCanvasListener('offcanvasRight');
+
+//위젯 추가 버튼
+btnAddWidget_K.addEventListener("click", () => {
+    const selectedWidget = document.querySelectorAll(".widget");
+    console.log("위젯선택", selectedWidget);
+    
+    const addWidgetList = [];
+    
+    for (item of selectedWidget) {
+        console.log("체크여부", item.checked);
+        //console.dir(item.classList[2].split("-")[1]); 이게 widgetNo.
+        if (item.checked) {
+            //console.log("추가한 위젯 클래스 : ", item.classList[2]);
+            let widgetNo = item.classList[2].split("-")[1];
+            
+            let widgetVO = {
+                widgetNo
+            };
+            
+            addWidgetList.push(widgetVO);
+        }
+        
+    }
+    //console.log("addWidgetList", addWidgetList);
+    //선택한 객체가 담긴 배열 넘겨주기
+    saveWidget_K(addWidgetList);
+    renderWidgetList_K();
+    document.querySelector("#bs-example-modal-lg").classList.remove("show");
+    document.querySelector("#bs-example-modal-lg").style.display = "none";
+});
+
+//위젯 리스트 만들기
+function renderWidgetList_K() {
+    const target = document.querySelector("#widget-list");
+    
+    axios
+      .get("/widget/list")
+      .then((res) => {
+          //console.log(res);
+          const json = res.data;
+          let text = "";
+          
+         for (item of json) {
+              text += `<div class="form-check mb-2 form-check-success">`;
+              text += `<input class="form-check-input widget widgetList-\${item.widgetNo}" type="checkbox" value="\${item.widgetName}" id="customckeck-\${item.widgetName}">`;
+              text += `<label class="form-check-label" for="customckeck-\${item.widgetName}">\${item.widgetName}</label>`;
+              text += `</div>`;
+          }
+          console.log(json);
+          target.innerHTML = text;
+      });
+}
+
+//회원의 위젯 리스트 저장하기
+function saveWidget_K(addWidgetList) { //여기서 네개만 들어가면 안됨. -> save 버튼 말고 add 버튼으로 추가와 동시에 저장해야할듯.
+	//우선 현재 div내용 탐색
+	//const wList = document.querySelector("#widget-myList");
+	console.log("addWidgetList");
+	console.log(addWidgetList);//widgetNo 담겨있음.
+	
+	for (let i = 0; i < addWidgetList.length; i++) {
+		//우선은 즐겨찾기 목록 없이 단일 목록으로 개발 시작
+		//위젯별로 각각 한번씩 inset 들어가야함. 
+		let widgetNo = addWidgetList[i].widgetNo;
+		let widgetBarVO = {
+		  widgetNo,
+		  memberId,
+		  widgetBarTitle: "테스트위젯바"
+		};
+		
+		axios
+		  .post("/widget/insertWidgetBar", widgetBarVO)
+		  .then((res) => {
+			  //console.log(res);위젯바에 등록 성공
+			  renderWidgetBar_K();
+		  });
+	}
+}
+
+//해당 회원의 위젯 리스트 불러오기
+function renderWidgetBar_K() {
+	//console.log("위젯 렌더할 멤버 아이디 : ", memberId);
+	const widgetBarVO = {
+	  memberId,
+	};
+	
+	axios
+	  .post("/widget/myWidgetList", widgetBarVO)
+	  .then((res) => {
+		console.log("내 위젯목록 : ", res.data); //잘 가져옴. 이제 이걸 토대로 그려줘야함.
+		
+		renderWidgetItem_K(res.data);
+	  });
+}
+
+function renderWidgetItem_K(widgetList) { //+= 방식이 아니라 + 방식으로..
+	let text = "";
+	const selectList = [];
+	
+	for (item of widgetList) {
+		//메모장
+		if (item.widgetNo == 1) {
+			selectList.push("memo");
+            text += `<div id="widget-memo" style="height: 200px; width: 100%;" class="widgetNo-1 widgetBarNo-\${item.widgetBarNo} ag-theme-alpine">`;
+            text += `</div>`;
+        }  
+        //날씨
+        if (item.widgetNo == 2) {
+        	selectList.push("weather");
+            text += `<div id="widget-weather" class="widgetNo-2 widgetBarNo-\${item.widgetBarNo}">`;
+            text += ` <span style="color: black;"></span>`;
+            text += ` <span style="color: black;"></span>`;
+            text += `</div>`;
+        }
+        
+        //차트 - 프로젝트
+        if (item.widgetNo == 4) {
+        	selectList.push("chart-project");
+            text += `<div id="widget-chart-project" class="widgetNo-4 widgetBarNo-\${item.widgetBarNo}"></div>`;
+        }
+        //차트 - 나의 일감
+        if (item.widgetNo == 5) {
+        	selectList.push("chart-myTopWork");
+            text += `<div id="widget-chart-myTopWork" class="widgetNo-5 widgetBarNo-\${item.widgetBarNo}"></div>`;
+        }
+	}
+	
+	document.querySelector("#widget-myList").innerHTML = text;
+	
+	if (selectList.includes("memo")) {
+        var gridDiv = document.querySelector('#widget-memo');
+        new agGrid.Grid(gridDiv, gridOptions);
+    }
+    
+    if (selectList.includes("weather")) {
+        //success 함수와 error 함수를 인자로 받음.
+        navigator.geolocation.getCurrentPosition(onGeoOk, onGeoError);
+    }
+    
+    if (selectList.includes("chart-project")) {
+        var chartProject = new ApexCharts(document.querySelector("#widget-chart-project"), optionsProjectChart_K);
+        chartProject.render();
+    }
+    
+    if (selectList.includes("chart-myTopWork")) {
+        var chartMy = new ApexCharts(document.querySelector("#widget-chart-myTopWork"), optionsMyChart_K);
+        chartMy.render();
+    }
+    
+    //위젯 다 그리고 드래그 이벤트 걸기
+    const container = document.querySelector(".container-widget");
+    const containerSideBar = document.querySelector(".container-widget2");
+    const containerDustbin = document.querySelector(".container-widget-delete");
+    
+    new Sortable(container, {
+        group: {
+            name: "shared", //이게 같은 Sortable 객체들끼리 이동 가능
+          },
+          swapThreshold: 1,
+          animation: 150,
+          ghostClass: "blue-background-class",
+          //sort: false, 이거 false하면 원래 영역 내에서는 안움직임
+          onChoose: function (event) {
+            //클릭한 아이템
+            //선택한 영역 안에 테이블 목록
+            //console.log("시작~~~"); //근데 마우스가 떠나야만 이게 실행되어야 함... 근데 드래그 시작하면 못잡음..?
+            function delay() {
+                let myOffCanvas = document.querySelector("#offcanvasRight"); 
+                let openedCanvas = bootstrap.Offcanvas.getInstance(myOffCanvas);
+                openedCanvas.hide();
+            }
+            
+            //setTimeout(delay, 1000);
+          },
+          filter: ".filtered",
+          onEnd: function (event) {
+            //내려놓았을때!
+            ////////////////////////////////////////////////////////////////////////
+            // 위젯 이동시 위치 잡아주기  
+            ////////////////////////////////////////////////////////////////////////
+            console.log("내려놓은 곳", event.item);
+            console.log("내려놓은 곳 부모 : ", event.item.parentElement);
+            
+          },
+          onAdd: function (event) {
+        	  //console.log("드랍? : ", event);
+          },
+          onMove: function(event) {
+        	  //console.log("무브 : ", event);
+          }
+    });
+    new Sortable(containerSideBar, { //바깥 사이드바영역
+        group: {
+            name: "shared", //이게 같은 Sortable 객체들끼리 이동 가능
+          },
+          swapThreshold: 1,
+          animation: 150,
+          ghostClass: "blue-background-class",
+          //sort: false, 이거 false하면 원래 영역 내에서는 안움직임
+          onChoose: function (event) {
+            //클릭한 아이템
+            //선택한 영역 안에 테이블 목록
+            //console.log("시작~~~");
+            function delay() {
+                let myOffCanvas = document.querySelector("#offcanvasRight"); 
+                let openedCanvas = bootstrap.Offcanvas.getInstance(myOffCanvas);
+                openedCanvas.hide();
+            }
+            
+            //setTimeout(delay, 1000);
+          },
+          filter: ".filtered",
+          onEnd: function (event) {
+            //내려놓았을때!
+          },
+    });
+    new Sortable(containerDustbin, {
+        group: {
+            name: "shared", //이게 같은 Sortable 객체들끼리 이동 가능
+          },
+          swapThreshold: 1,
+          animation: 150,
+          ghostClass: "blue-background-class",
+          filter: ".filtered",
+          //sort: false, 이거 false하면 원래 영역 내에서는 안움직임
+          onChoose: function (event) {
+            //클릭한 아이템
+            //선택한 영역 안에 테이블 목록
+            //console.log("시작~~~");
+            function delay() {
+                let myOffCanvas = document.querySelector("#offcanvasRight"); 
+                let openedCanvas = bootstrap.Offcanvas.getInstance(myOffCanvas);
+                openedCanvas.hide();
+            }
+            
+            //setTimeout(delay, 1000);
+          },
+          onEnd: function (event) {
+        	  console.log(event.item);
+            //내려놓았을때!
+          },
+          onAdd: function (event) {
+        	  //아이템이 휴지통에 들어갔을 때!
+              //console.dir(event.item);
+              //console.log(event.item);
+        	  //console.log("내아이디 : ", memberId, "widgetNo : ", event.item.classList[0].split("-")[1]);
+        	  let widgetBarNo = event.item.classList[1].split("-")[1];
+        	  let widgetNo = event.item.classList[0].split("-")[1];
+        	  //console.log("widgetBarNo", widgetBarNo)
+        	  const widgetBarVO = {
+        		memberId,
+        		widgetNo,
+        		widgetBarNo
+        	  };
+        	  
+        	  axios
+        	    .post("/widget/deleteWidgetBar", widgetBarVO)
+        	    .then((res) => {
+        	    	//console.log(res); 삭제 잘 됨. 
+        	    	//삭제 됐으면 휴지통 비우기 + 다시 그려주기
+        	    	document.querySelector("#dustbin").innerHTML = `<h3 class="">휴지통</h3>`;  	    	
+        	    	renderWidgetBar_K();
+        	    });
+        	  
+          },
+    });
+    
+};
+
+</script>

@@ -1,0 +1,30 @@
+package kr.or.ddit.controller.widget;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.common.util.concurrent.Service;
+
+import kr.or.ddit.controller.widget.service.IWidgetService;
+import kr.or.ddit.vo.WidgetVO;
+
+@Controller
+@RequestMapping("/widget")
+public class WidgetController {
+    @Inject
+    private IWidgetService service;
+    
+    @GetMapping(value = "/list", produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public List<WidgetVO> list() throws Exception {
+        List<WidgetVO> list = service.list();
+        
+        return list;
+    }
+}

@@ -1,0 +1,26 @@
+package kr.or.ddit.controller.project;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+
+import kr.or.ddit.controller.project.service.IProjectService;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Controller
+public class GdocsController {
+	
+	@Inject
+    private IProjectService projectService;
+	
+	@PostMapping("/gdocsSheet")
+	public String createGSheet(String sheetId) {
+		log.debug("gdocs new sheet id : {} ",sheetId);
+		
+		return "OK";
+	}
+	
+}

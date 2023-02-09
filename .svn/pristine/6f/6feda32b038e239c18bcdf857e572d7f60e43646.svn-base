@@ -1,0 +1,42 @@
+package kr.or.ddit.controller.devin;
+
+import javax.inject.Inject;
+
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import kr.or.ddit.controller.devin.service.IDevinService;
+import kr.or.ddit.vo.DevinVO;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Controller
+@RequestMapping("/devin")
+public class DevinController {
+	
+	@Inject
+	private IDevinService service;
+	
+	//인서트 폼(개발자지식인 등록페이지)
+	@GetMapping("/insert")
+	public String dveInInsertform() {
+		return "content/devinInsert";
+	}
+	
+	//인서트 버튼 눌러서~
+//	@PostMapping("/insert")
+	@RequestMapping(value = "/insert", method = RequestMethod.POST)
+	public String dveInInsert(DevinVO devinVO) throws Exception  {
+		service.insert(devinVO);
+		  
+		return "content/devinList";
+	}
+		
+	
+	
+	
+}

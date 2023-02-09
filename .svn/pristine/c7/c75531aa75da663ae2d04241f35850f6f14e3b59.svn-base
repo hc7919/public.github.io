@@ -1,0 +1,48 @@
+package kr.or.ddit.controller.topwork.service;
+
+import java.util.List;
+import java.util.Map;
+
+import kr.or.ddit.vo.DragTestVO;
+import kr.or.ddit.vo.TopWorkCategoryVO;
+import kr.or.ddit.vo.TopWorkRelationVO;
+import kr.or.ddit.vo.TopWorkVO;
+
+
+public interface ICalendarService {
+
+    public List<TopWorkVO> list(String proNo) throws Exception;
+
+    public String insert(TopWorkVO topWorkVO) throws Exception;
+
+    public void updateMove(TopWorkVO topWorkVO) throws Exception;
+
+    public void update(TopWorkVO topWorkVO) throws Exception;
+
+    public void delete(TopWorkVO topWorkVO) throws Exception;
+
+    public List<TopWorkCategoryVO> categoryList(String proNo) throws Exception;
+
+    public void categoryInsert(TopWorkCategoryVO topWorkCategoryVO) throws Exception;
+
+    public void categoryDelete(TopWorkCategoryVO topWorkCategoryVO) throws Exception;
+
+    public void topWorkMove(TopWorkVO topWorkVO) throws Exception;
+
+    public void logInsert(Map<String, String> map) throws Exception;
+
+    public void categoryUpdate(TopWorkCategoryVO topWorkCategoryVO) throws Exception;
+
+    public TopWorkVO select(TopWorkVO topWorkVO) throws Exception;
+
+    public void topWorkUpdate(TopWorkVO topWorkVO) throws Exception;
+
+    public void topWorkDelete(TopWorkVO topWorkVO) throws Exception;
+
+    public void insertRelation(TopWorkRelationVO topWorkRelationVO) throws Exception;
+
+    public String selectCategoryColor(String twCategoryNo) throws Exception;
+
+
+    
+}

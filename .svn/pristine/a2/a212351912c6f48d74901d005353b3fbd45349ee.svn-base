@@ -1,0 +1,105 @@
+package kr.or.ddit.controller.admin.service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Service;
+
+import kr.common.CommonDao;
+import kr.or.ddit.vo.MemberVO;
+import kr.or.ddit.vo.ProjectVO;
+import kr.or.ddit.vo.SubWorkVO;
+import kr.or.ddit.vo.TopWorkCategoryVO;
+import kr.or.ddit.vo.TopWorkRelationVO;
+import kr.or.ddit.vo.TopWorkVO;
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
+@Service
+public class AdminServiceImpl implements IAdminService {
+    @Inject
+    private CommonDao dao;
+    @Override
+    public List<MemberVO> getAllMember() throws Exception {
+        return dao.selectList("getAllMember");
+    }
+    @Override
+    public List<ProjectVO> getAllProject() throws Exception {
+        return dao.selectList("getAllProject");
+    }
+    @Override
+    public Map<String, Object> getAllDatas() throws Exception {
+        List<ProjectVO> projectList = dao.selectList("getAllProject");
+        List<TopWorkCategoryVO> twCategoryList = dao.selectList("getAlltwCategory");
+        List<TopWorkVO> topWorkList = dao.selectList("getAllTopWork");
+        List<SubWorkVO> subWorkList = dao.selectList("getAllSubWork");
+        List<TopWorkRelationVO> twRelationList = dao.selectList("getAlltwRelation");
+        
+        Map<String, Object> map = new HashMap<>();
+        map.put("projectList", projectList);
+        map.put("twCategoryList", twCategoryList);
+        map.put("topWorkList", topWorkList);
+        map.put("subWorkList", subWorkList);
+        map.put("twRelationList", twRelationList);
+        
+        return map;
+    }
+    @Override
+    public void updateProjectName(ProjectVO projectVO) throws Exception {
+        dao.update("updateProjectName", projectVO);
+    }
+    @Override
+    public void updateCategoryName(TopWorkCategoryVO twCategoryVO) throws Exception {
+        dao.update("updateCategoryName", twCategoryVO);
+    }
+    @Override
+    public void updateTopWorkTitle(TopWorkVO topWorkVO) throws Exception {
+        dao.update("updateTopWorkTitle", topWorkVO);
+    }
+    @Override
+    public void updateTopWorkProgress(TopWorkVO topWorkVO) throws Exception {
+        TopWorkVO vo = dao.select("checkTopWorkProgress", topWorkVO);
+        String oldProgress = vo.getTopWorkProgress();
+        String progress = topWorkVO.getTopWorkProgress();
+        log.debug("변경 전 진행률 : {}, 변경 후 진행률 : {}", oldProgress, progress);
+        
+        if (!oldProgress.equals("100") && progress.equals("100")) {
+            //상태값 승인대기로 바꿔야함
+            log.debug("상태값이 100으로 업데이트되어 상태값이 승인대기로 변경됩니다.");
+            dao.update("updateTopWorkState_2", topWorkVO);
+        }
+        
+        if (oldProgress.equals("100") && !progress.equals("100")) {
+            //상태값 승인대기 혹은 완료에서 진행중으로 바뀌어야함
+            log.debug("상태값이 100에서 업데이트되어 상태값이 진행중으로 변경됩니다.");
+            dao.update("updateTopWorkState_1", topWorkVO);
+            
+        }
+        
+        dao.update("updateTopWorkProgress", topWorkVO);        
+    }
+    @Override
+    public void updateSubWorkTitle(SubWorkVO subWorkVO) throws Exception {
+        dao.update("updateSubWorkTitle", subWorkVO);
+    }
+    @Override
+    public void updateMemberName(MemberVO memberVO) throws Exception {
+        dao.update("updateMemberName", memberVO);
+    }
+    @Override
+    public void updateMemberPhone(MemberVO memberVO) throws Exception {
+        dao.update("updateMemberPhone", memberVO);
+    }
+    @Override
+    public void updateMemberBirth(MemberVO memberVO) throws Exception {
+        dao.update("updateMemberBirth", memberVO);
+    }
+    @Override
+    public void updateMemberRegdate(MemberVO memberVO) throws Exception {
+        dao.update("updateMemberRegdate", memberVO);
+    }
+    
+    
+}

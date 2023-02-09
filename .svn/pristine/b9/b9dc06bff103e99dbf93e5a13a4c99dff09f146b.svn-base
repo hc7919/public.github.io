@@ -1,0 +1,14 @@
+package kr.or.ddit.controller.subwork.service;
+
+import java.util.List;
+
+import kr.or.ddit.vo.SubWorkVO;
+import kr.or.ddit.vo.TopWorkVO;
+
+public interface ISubWorkService {
+
+    public void subWorkInsert(SubWorkVO subWorkVO) throws Exception;
+
+    public List<SubWorkVO> subWorkList(TopWorkVO topWorkVO) throws Exception;
+
+}

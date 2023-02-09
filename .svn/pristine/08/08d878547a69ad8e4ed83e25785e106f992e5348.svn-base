@@ -1,0 +1,73 @@
+package kr.or.ddit.controller.calendar;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import kr.or.ddit.controller.calendar.service.ICalendarService;
+import kr.or.ddit.vo.DragTestVO;
+import kr.or.ddit.vo.TopWorkVO;
+
+
+@Controller
+@RequestMapping("/calendar")
+public class CalendarController {
+    private static Logger logger = LoggerFactory.getLogger(CalendarController.class);
+    
+    @Inject
+    private ICalendarService service;
+    
+    @GetMapping("/main")
+    public String calendar() {
+        return "content/calendar";
+    }
+    
+    //수정완료
+    @PostMapping(value = "/list", produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public List<TopWorkVO> list() throws Exception {
+        logger.info("리스트 들어옴");
+        List<TopWorkVO> list = service.list();
+        
+        return list;
+    }
+    
+    
+    @PostMapping(value = "/insert", produces = "text/plain; charset=utf-8")
+    @ResponseBody
+    public String insert(@RequestBody Map<String, String> map) throws Exception {
+        logger.info("인서트 들어옴 : " + map.toString());
+        service.insert(map);
+        
+        return "인서트 성공";
+    }
+    
+    @PostMapping(value = "/updateMove", produces = "text/plain; charset=utf-8")
+    @ResponseBody
+    public String updateMove(@RequestBody Map<String, String> map) throws Exception {
+        service.updateMove(map);
+        
+        return "이동 성공!";
+    }
+    
+    @PostMapping(value = "/update", produces = "text/plain; charset=utf-8")
+    @ResponseBody
+    public String update(@RequestBody Map<String, String> map) throws Exception {
+        service.update(map);
+        
+        return "업데이트 성공";
+    }
+    
+    
+    
+}

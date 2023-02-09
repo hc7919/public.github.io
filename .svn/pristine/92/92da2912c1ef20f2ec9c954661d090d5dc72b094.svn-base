@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.vo.TopWorkVO">
+    <select id="list" resultType="topWorkVO">
+        <![CDATA[
+            SELECT TOPWORK_NO
+                 , PRO_NO
+                 , TW_CATEGORY_NO
+                 , TOPWORK_CONTENT
+                 , TOPWORK_START
+                 , TOPWORK_END
+                 , TOPWORK_STATE
+                 , TOPWORK_PROGRESS
+                 , TOPWORK_LIKE
+                 , TOPWORK_FILE
+                 , TOPWORK_TITLE
+              FROM TOPWORK
+             WHERE TOPWORK_NO > 0
+             ORDER BY TOPWORK_START ASC
+        ]]>
+    </select>
+    
+    <insert id="insert" parameterType="Map">
+         <selectKey resultType="String" keyProperty="topWorkNo" order="BEFORE">
+            SELECT SEQ_TOPWORK.NEXTVAL FROM DUAL
+         </selectKey>
+        
+        INSERT INTO TOPWORK (
+            TOPWORK_NO
+          , PRO_NO
+          , TW_CATEGORY_NO
+          , TOPWORK_CONTENT
+          , TOPWORK_START
+          , TOPWORK_END
+          , TOPWORK_STATE
+          , TOPWORK_PROGRESS
+          , TOPWORK_LIKE
+          , TOPWORK_FILE
+          , TOPWORK_TITLE
+        ) VALUES (
+            <if test="topWorkStart == null and topWorkEnd == null">
+                #{topWorkNo}
+              , #{proNo}
+              , #{twCategoryNo}
+              , #{topWorkContent}
+              , #{topWorkStart}
+              , #{topWorkEnd}
+              , 0
+              , #{topWorkProgress}
+              , #{topWorkLike}
+              , #{topWorkFile}
+              , #{topWorkTitle}
+            </if>
+            
+            <if test="topWorkStart != null">
+                SEQ_TOPWORK.NEXTVAL
+              , #{proNo}
+              , #{twCategoryNo}
+              , #{topWorkContent}
+              , #{topWorkStart}
+              , #{topWorkEnd}
+              , 0
+              , #{topWorkProgress}
+              , #{topWorkLike}
+              , #{topWorkFile}
+              , #{topWorkTitle}
+            </if>
+        )
+    </insert>
+    <!-- 작업 insert 후 관계 테이블에 작업자 insert -->
+    <insert id="insertRelation" parameterType="Map">
+        INSERT INTO TOPWORK_RELATION (
+            TOPWORK_R_NO
+          , TOPWORK_NO
+          , MEMBER_ID
+        ) VALUES (
+            SEQ_TOPWORK_R.NEXTVAL
+          , #{topWorkNo}
+          , #{memberId}
+        )
+        
+    </insert>
+    
+    
+    <update id="updateDate" parameterType="Map">
+        UPDATE TOPWORK
+           SET TOPWORK_START = #{topWorkStart}
+             , TOPWORK_END = #{topWorkEnd}
+         WHERE TOPWORK_NO = #{topWorkNo}
+    </update>
+    
+    <update id="update" parameterType="Map">
+        UPDATE TOPWORK
+           SET TOPWORK_TITLE = #{topWorkTitle}
+             , TOPWORK_CONTENT = #{topWorkContent}
+             , TOPWORK_START = #{topWorkStart}
+             , TOPWORK_END = #{topWorkEnd}
+             , TOPWORK_PROGRESS = #{topWorkProgress}
+             , TOPWORK_LIKE = #{topWorkLike}
+             , TOPWORK_FILE = #{topWorkFile}
+         WHERE TOPWORK_NO = #{topWorkNo}
+    </update>
+    
+    
+</mapper>

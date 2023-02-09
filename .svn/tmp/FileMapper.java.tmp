@@ -1,0 +1,34 @@
+package kr.or.ddit.mapper;
+
+import java.util.List;
+
+import kr.or.ddit.vo.FileVO;
+import kr.or.ddit.vo.TopWorkVO;
+
+public interface FileMapper {
+
+	public int insertFiles(List<FileVO> list) throws Exception;
+
+	public int insertFile(FileVO fileVO) throws Exception;
+
+	public List<FileVO> getCategoryFiles(String twCategoryNo) throws Exception;
+
+	public int changeFilePath(FileVO cfile) throws Exception;
+
+	public int setFileisDel(int fileLNo);
+
+	public int topworkFileDel(String topWorkFile);
+
+	public List<FileVO> getFilePath(int topWorkFile);
+
+<<<<<<< .mine
+    public List<FileVO> selectFile(TopWorkVO topWorkVO) throws Exception;
+
+||||||| .r299699
+=======
+	public List<FileVO> getFilePathWP(String proNo);
+
+	public int updateFilePath(FileVO fileVO);
+
+>>>>>>> .r300145
+}

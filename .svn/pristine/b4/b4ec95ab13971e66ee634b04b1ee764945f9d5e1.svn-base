@@ -1,0 +1,733 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+
+<!-- 캘린더 CSS-->
+<link
+	href="https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css"
+	rel="stylesheet" />
+
+<!-- 티피 -->
+<link rel="stylesheet"
+	href="https://unpkg.com/tippy.js@6/animations/scale.css" />
+<script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
+<script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>
+
+
+<!-- 피커 -->
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" type="text/css"
+	href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/ko.js"></script>
+
+<!-- 레인지바 -->
+<link
+	href="${pageContext.request.contextPath }/resources/dist/assets/libs/ion-rangeslider/css/ion.rangeSlider.min.css"
+	rel="stylesheet" type="text/css" />
+
+<style>
+white-space
+:
+ 
+pre-wrap
+;
+</style>
+
+
+
+<div class="content-page">
+	<div class="content">
+		<div class="container-fluid">
+			<!-- start page title -->
+			<div class="row">
+				<div class="col-12">
+					<div class="page-title-box">
+						<h4 class="page-title">캘린더얌</h4>
+						<div>
+							<ol class="breadcrumb m-0">
+								<li class="breadcrumb-item"><a href="javascript: void(0);">Codefox</a></li>
+								<li class="breadcrumb-item"><a href="javascript: void(0);">Apps</a></li>
+								<li class="breadcrumb-item active">캘린더</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end page title -->
+
+			<div class="card">
+				<div class="card-body">
+					<div class="row">
+						<!-- <div class="col-lg-3">
+                                    <button class="btn btn-lg font-16 btn-primary w-100" id="btn-new-event"><i class="mdi mdi-plus-circle-outline"></i> Create New Event</button>
+                                    
+                                    <div id="external-events">
+                                        <br>
+                                        <p class="text-muted">Drag and drop your event or click in the calendar</p>
+                                        <div class="external-event bg-success" data-class="bg-success">
+                                            <i class="mdi mdi-checkbox-blank-circle me-2 vertical-middle"></i>New Theme Release
+                                        </div>
+                                        <div class="external-event bg-info" data-class="bg-info">
+                                            <i class="mdi mdi-checkbox-blank-circle me-2 vertical-middle"></i>My Event
+                                        </div>
+                                        <div class="external-event bg-warning" data-class="bg-warning">
+                                            <i class="mdi mdi-checkbox-blank-circle me-2 vertical-middle"></i>Meet manager
+                                        </div>
+                                        <div class="external-event bg-danger" data-class="bg-danger">
+                                            <i class="mdi mdi-checkbox-blank-circle me-2 vertical-middle"></i>Create New theme
+                                        </div>
+                                    </div>
+
+
+                                    <div class="mt-5 d-none d-xl-block">
+                                        <h5 class="text-center">How It Works ?</h5>
+
+                                        <ul class="ps-3">
+                                            <li class="text-muted mb-3">
+                                                It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                                            </li>
+                                            <li class="text-muted mb-3">
+                                                Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage.
+                                            </li>
+                                            <li class="text-muted mb-3">
+                                                It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </div> end col -->
+
+						<div class="col-lg-9">
+							<div id="calendar"></div>
+						</div>
+						<!-- end col -->
+
+					</div>
+					<!-- end row -->
+				</div>
+				<!-- end card body-->
+			</div>
+			<!-- end card -->
+
+			<!-- Add New Event MODAL -->
+			<div class="modal fade" id="event-modal" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header py-3 px-4 border-bottom-0 d-block">
+							<button type="button" class="btn-close float-end"
+								data-bs-dismiss="modal" aria-label="Close"
+								onclick="insertModalClose()"></button>
+							<h5 class="modal-title" id="modal-title">작업 추가</h5>
+						</div>
+						<div class="modal-body px-4 pb-4 pt-0">
+							<form class="needs-validation" name="event-form" id="form-event"
+								novalidate>
+								<div class="row">
+									<div class="col-12">
+										<div class="mb-3">
+											<label class="form-label">Work Title</label> <input
+												class="form-control" placeholder="작업을 입력해주세요." type="text"
+												name="title" id="event-title" required />
+											<div class="invalid-feedback">작업 입력은 필수입니다.</div>
+										</div>
+										<div class="mb-3">
+											<label class="form-label">Worker</label> <input
+												class="form-control" placeholder="담당자를 입력해주세요." type="text"
+												name="worker" id="event-worker" required />
+											<div class="invalid-feedback">담당자를 설정해주세요.</div>
+										</div>
+									</div>
+									<div class="col-12">
+										<div class="mb-3">
+											<label class="form-label">Category</label> <select
+												class="form-select" name="category" id="event-category"
+												required>
+												<option value="emergency" selected>긴급</option>
+												<option value="important">중요</option>
+												<option value="normal">일반</option>
+											</select>
+											<div class="invalid-feedback">Please select a valid
+												event category</div>
+										</div>
+										<div class="mb-3">
+											<label class="form-label">Date</label>
+											
+										    <div style="display: flex; justify-content: space-around;">	
+												<div class="col-6">
+													<label class="form-label" for="birth">시작일</label> <input
+														class="form-control" id="birth" pattern="\d{4}-\d{2}-\d{2}"
+														placeholder="" required th:field="*{birth2}" type="text"
+														value="">
+												</div>
+												<div class="col-6">
+													<label class="form-label" for="birth2">종료일</label> <input
+														class="form-control" id="birth2" pattern="\d{4}-\d{2}-\d{2}"
+														placeholder="" required th:field="*{birth2}" type="text"
+														value="">
+												</div>
+											</div>
+
+
+											<div class="invalid-feedback">Please select a valid
+												event day</div>
+										</div>
+									</div>
+								</div>
+								<div class="row mt-2">
+									<div class="col-md-6 col-4">
+										<button type="button" class="btn btn-danger"
+											id="btn-delete-event">Delete</button>
+									</div>
+									<div class="col-md-6 col-8 text-end">
+										<button type="button" class="btn btn-light me-1"
+											id="btnModalClose" data-bs-dismiss="modal">Close</button>
+										<button type="button" class="btn btn-success"
+											id="btn-save-event">Save</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<!-- end modal-content-->
+				</div>
+				<!-- end modal dialog-->
+			</div>
+			<!-- end modal-->
+
+
+			<!-- Add Detail MODAL -->
+			<div class="modal fade" id="detail-modal" tabindex="-1">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header py-3 px-4 border-bottom-0 d-block">
+							<button type="button" class="btn-close float-end"
+								data-bs-dismiss="modal" aria-label="Close"
+								onclick="detailModalClose()"></button>
+							<h5 class="modal-title" id="modal-title">작업 상세보기</h5>
+						</div>
+						<div class="modal-body px-4 pb-4 pt-0">
+							<form class="needs-validation" name="event-form" id="form-event"
+								novalidate>
+								<div class="row">
+									<div class="col-12">
+										<div class="mb-3">
+											<label class="form-label">Work Title</label> <input
+												type="hidden" id="detail-dragNo" /> <input
+												class="form-control" placeholder="작업을 입력해주세요." type="text"
+												name="title" id="detail-title" required />
+											<div class="invalid-feedback">작업 입력은 필수입니다.</div>
+										</div>
+										<div class="mb-3">
+											<label class="form-label">Worker</label> <input
+												class="form-control" placeholder="담당자를 입력해주세요." type="text"
+												name="worker" id="detail-worker" required />
+											<div class="invalid-feedback">담당자를 설정해주세요.</div>
+										</div>
+									</div>
+									<div class="col-12">
+										<div class="mb-3">
+											<label class="form-label">Category</label> <select
+												class="form-select" name="category" id="detail-category"
+												required>
+												<option value="emergency" selected>긴급</option>
+												<option value="important">중요</option>
+												<option value="normal">일반</option>
+											</select>
+											<div class="invalid-feedback">Please select a valid
+												event category</div>
+										</div>
+										<div class="mb-3">
+											<label class="form-label">Date</label> <input
+												class="form-control" placeholder="기간을 정해주세요." type="text"
+												id="detail-date" required />
+											<div class="invalid-feedback">Please select a valid
+												event day</div>
+										</div>
+										<!-- 레인지 바 -->
+										<div class="mb-3">
+											<label class="form-label">진행상황</label> <input type="text"
+												id="range_15">
+											<div class="invalid-feedback">Please select a valid
+												event day</div>
+										</div>
+										<!-- 레인지바 끝 -->
+									</div>
+								</div>
+								<div class="row mt-2">
+									<div class="col-md-6 col-4">
+										<button type="button"
+											class="btn btn-dark waves-effect waves-light"
+											id="btn-share-detail">
+											<i class="mdi mdi-email-outline me-1"></i>Share
+										</button>
+									</div>
+									<div class="col-md-6 col-8 text-end">
+										<button type="button" class="btn btn-light me-1"
+											id="btn-close-detail" data-bs-dismiss="modal">Close</button>
+										<button type="button"
+											class="btn btn-primary waves-effect waves-light"
+											id="btn-update-detail">Update</button>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<!-- end modal-content-->
+				</div>
+				<!-- end modal dialog-->
+			</div>
+			<!-- end detail-modal-->
+
+
+
+		</div>
+		<!-- end col-12 -->
+	</div>
+	<!-- end row -->
+
+</div>
+<!-- container -->
+
+</div>
+<!-- content -->
+</div>
+<!-- 내꺼 -->
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<!-- 데이트피커 -->
+
+<script
+	src="https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js"></script>
+<!-- fullcalendar 언어 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/locales-all.min.js"></script>
+<!-- 풀캘린더 데이트 포맷 -->
+<script class="cssdesk" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.0/moment.min.js" type="text/javascript"></script>
+
+	
+
+<!-- 템플맀거 -->
+<script
+	src="${pageContext.request.contextPath }/resources/dist/assets/js/vendor.min.js"></script>
+<script
+	src="${pageContext.request.contextPath }/resources/dist/assets/libs/moment/min/moment.min.js"></script>
+<script
+	src="${pageContext.request.contextPath }/resources/dist/assets/js/app.min.js"></script>
+
+<script
+	src="${pageContext.request.contextPath }/resources/dist/assets/libs/ion-rangeslider/js/ion.rangeSlider.min.js"></script>
+<!-- Range slider init js-->
+<script
+	src="${pageContext.request.contextPath }/resources/dist/assets/js/pages/range-sliders.init.js"></script>
+
+<script>
+//디테일 프로세스 바 관련
+console.log(document.querySelector("#range_15"));
+
+
+//피커
+const fp = flatpickr(document.getElementById("birth"), {
+    //'monthSelectorType' : 'static',
+    locale: "ko",
+    enableTime: "true",
+    onValueUpdate: () => {
+    	   //console.log("업데이트");
+    },
+    onDayCreate: () => {
+    	   //console.log("크리에이트");
+    },
+    
+});
+const fp2 = flatpickr(document.getElementById("birth2"), {
+    //'monthSelectorType' : 'static',
+    locale: "ko",
+    enableTime: "true",
+    onValueUpdate: () => {
+    	   //console.log("업데이트");
+    },
+    onDayCreate: () => {
+    	   //console.log("크리에이트");
+    },
+    
+});
+
+console.log(fp);
+
+
+const birth = document.querySelector("#birth");
+
+birth.addEventListener("change", () => {
+	console.log("값 바뀜", event.target.value);
+	const date = event.target.value;
+	console.log(date.replace(" ", "/"));
+});
+
+
+
+//달력 로드하려면 컨트롤러가 필요
+myRender();
+
+
+/////////////인서트용 모달////////////////////////////
+const insertModalOpen = (arg) => {
+    console.log(arg);
+    const dragSDate = arg.startStr;
+    const dragFDate = arg.endStr;
+    //document.querySelector("#event-date").value = `\${dragSDate}~\${dragFDate}`;
+    
+	document.querySelector("#event-modal").classList.add("show");
+    document.querySelector("#event-modal").style.display = "block";
+};
+
+
+var btnInsertModalClose = document.querySelector("#btnModalClose");
+var btnInsertModalDelete = document.querySelector("#btn-delete-event");
+var btnInsertModalSave = document.querySelector("#btn-save-event");
+
+//modal 클로즈(숨기기) //모든 값 채우면 자동으로 모달이 닫힌다. -> 버튼타입이 submit이라 -> button으로 바꿈
+btnInsertModalClose.addEventListener("click", () => {
+	insertModalClose();
+});
+
+const insertModalClose = () => {
+	document.querySelector("#event-modal").classList.remove("show");
+    document.querySelector("#event-modal").style.display = "none";
+};
+
+btnInsertModalDelete.addEventListener("click", () => {
+	document.querySelector("#event-title").value = "";
+});
+
+btnInsertModalSave.addEventListener("click", (event) => {
+	const dragWorkContent = document.querySelector("#event-title").value;
+	const dragWorkName = document.querySelector("#event-worker").value;
+	const dragCategory = document.querySelector("#event-category").value;
+	
+	if (!dragWorkContent || !dragWorkName) {
+	    //	console.log("타이틀없다");
+		return;
+	}
+	
+	const startDay = document.querySelector("#birth").value.replace(" ", "/");
+	const endDay = document.querySelector("#birth2").value.replace(" ", "/");
+	//console.log(date);
+	const dragSDate = startDay;
+	const dragFDate = endDay;
+	
+	//console.log("dragSDate", dragSDate);
+	//console.log("dragFDate", dragFDate); 피커 값 가져오기 성공 
+	
+	const map = { 
+	    dragWorkContent,
+	    dragWorkName,
+	    dragSDate,
+	    dragFDate,
+	    dragCategory,
+	};
+	//console.log(map);
+	
+	const obj = {};
+	obj.method = "post";
+	obj.url = "/calendar/insert";
+    obj.header = "json";
+    obj.sendData = JSON.stringify(map);
+    
+    myAsync(obj, (data) => {
+    	   //console.log(data);
+    	   insertModalClose();
+    	   //글쓰기 후 렌더링
+       myRender();
+    });
+    
+});
+/////////////인서트용 모달 끝///////////////////////////
+
+
+////////////디테일용 모달/////////////////////////////
+var btnDetailModalClose = document.querySelector("#btn-close-detail");
+var btnDetailModalShare = document.querySelector("#btn-share-detail");
+var btnDetailModalSave = document.querySelector("#btn-update-detail");
+
+const detailModalOpen = (dragVO) => {
+	//프로그레스 바 //페이지 새로고침하고 최초로 모달창 열었을때 위치 안맞음.
+	
+	
+	
+	if (dragVO.dragProgress == "0") {
+	    	document.querySelector(".irs-single").innerText = "0";
+	} else {
+	    	document.querySelector(".irs-single").innerText = dragVO.dragProgress; //-8.1%한걸로 위치 잡아줘야함
+	}
+	
+	let bar;
+	if (dragVO.dragProgress == "0") {
+		bar = Number(dragVO.dragProgress);
+	} else {
+		bar = Number(dragVO.dragProgress) - 8.1;
+	}
+	console.log("바 : ", bar);
+	document.querySelector(".irs-single").style= `left: \${bar}%`;
+	document.querySelector(".irs-handle").style= `left: \${bar}%`;
+	document.querySelector(".irs-bar").style= `left: 0px; width: \${bar + 3}%`;
+	////////////////////
+	
+	
+	console.log("모달열고 데이터 : ",dragVO);
+	document.querySelector("#detail-dragNo").value = dragVO.dragNo;
+	document.querySelector("#detail-title").value = dragVO.dragWorkContent;
+	document.querySelector("#detail-worker").value = dragVO.dragWorkName;
+	document.querySelector("#detail-category").value = dragVO.dragCategory;
+	document.querySelector("#detail-date").value = `\${dragVO.dragSDate}~\${dragVO.dragFDate}`;
+	
+	
+	
+	
+	document.querySelector("#detail-modal").classList.add("show");
+    document.querySelector("#detail-modal").style.display = "block";
+};
+
+const detailModalClose = () => {
+	document.querySelector("#detail-modal").classList.remove("show");
+    document.querySelector("#detail-modal").style.display = "none";
+};
+
+btnDetailModalClose.addEventListener("click", () => {
+	detailModalClose();
+});
+
+
+
+btnDetailModalSave.addEventListener("click", (event) => {
+	//작업 진행도 (rangeBar)
+	const dragProgress = document.querySelector(".irs-single").innerText;
+	//console.log(document.querySelector("#detail-dragNo").value);
+	const dragNo = document.querySelector("#detail-dragNo").value;
+	const dragWorkContent = document.querySelector("#detail-title").value;
+	const dragWorkName = document.querySelector("#detail-worker").value;
+	const dragCategory = document.querySelector("#detail-category").value;
+	
+	const map = {
+		dragNo,
+		dragWorkContent,
+		dragWorkName,
+		dragCategory,
+		dragProgress,
+	};
+	
+	const obj = {};
+	obj.method = "post";
+	obj.url = "/calendar/update";
+	obj.header = "json";
+	obj.sendData = JSON.stringify(map);
+	
+	myAsync(obj, (responseData) => {
+		console.log(responseData);
+		//수정 후 렌더링
+		myRender();
+		detailModalClose();
+	});
+});
+
+function myRender() {
+    const promise = new Promise((resolve, reject) => {
+        const obj = {};
+        obj.url = "/calendar/list";
+        obj.method = "post";
+        
+        myAsync(obj, (responseData) => {
+        	   //console.log(responseData);
+            //alert(responseData);
+            resolve(JSON.parse(responseData));
+        });
+    });
+
+    promise
+    .then((data) => {
+        
+        let text = "[";
+        for (let i = 0; i < data.length; i++) {
+            console.log(data[i].dragSDate);
+        	
+               text += "{ ";
+               text += '"dragNo" : ' + '"' + data[i].dragNo + '", ';
+               text += '"title" : ' + '"' + data[i].dragWorkContent + '", '; //제목
+               text += '"dragWorkName" : ' + '"' + data[i].dragWorkName + '", '; //워크네임(작업자)
+               text += '"dragProgress" : ' + '"' + data[i].dragProgress + '", '; //워크네임(작업자)
+               
+                   if (data[i].dragCategory == "emergency") {
+                       text += '"color" : "tomato",';
+                       //console.log("토마토");
+                   }
+                   if (data[i].dragCategory == "important") {
+                       text += '"color" : "skyblue",';
+                       //console.log("블루");
+                   }
+                   if (data[i].dragCategory == "normal") {
+                       text += '"color" : "green",';
+                       //console.log("초록");
+                   }
+               
+               text += '"start" : ' +'"' + data[i].dragSDate.replace("/", "T") + '", ';
+               text += '"end" : '  + '"' + data[i].dragFDate.replace("/", "T") + '"'; //T로 해야 캘린더에 출력됨.
+               
+                   if (i == data.length - 1){
+                   text += "} ";
+               } else {
+                   text += "}, ";
+               }
+        }
+        //extendedProps: {
+        //    department: 'BioChemistry'
+        //}, 형식으로 데ㅐ이터 담아줄 수 있음.
+        
+        text += "]";
+        text = text.replace(/\n/gi,"\\n"); //개행문자 파싱오류 ...모든 \n을 \\n으로 바꿔야함
+        let json = JSON.parse(text);
+        
+        //alert("이제 달력출력");
+        // calendar element 취득
+        var calendarEl = document.querySelector("#calendar");
+        // full-calendar 생성하기
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+              //plugins: ['interaction', 'dayGrid'], 이거하면 왜 오륜가
+          firstDay: 1,
+          height: "700px", // calendar 높이 설정
+          expandRows: true, // 화면에 맞게 높이 재설정
+          slotMinTime: "08:00", // Day 캘린더에서 시작 시간
+          slotMaxTime: "20:00", // Day 캘린더에서 종료 시간
+          timeFormat                : 'HH:mm',
+          weekends                  : true,
+          nowIndicator              : true,
+          
+          // 해더에 표시할 툴바
+          headerToolbar: {
+            left: "prev,next today",
+            center: "title",
+            right: "dayGridMonth,timeGridWeek,timeGridDay,listWeek", //여기서 정렬기준 조정
+          },
+          initialView: "dayGridMonth", // 초기 로드 될때 보이는 캘린더 화면(기본 설정: 달)
+          //initialDate: "2021-07-15", // 초기 날짜 설정 (설정하지 않으면 오늘 날짜가 보인다.)
+          navLinks: true, // 날짜를 선택하면 Day 캘린더나 Week 캘린더로 링크
+          editable: true, // 수정 가능?
+          selectable: true, // 달력 일자 드래그 설정가능
+          nowIndicator: true, // 현재 시간 마크
+          dayMaxEvents: true, // 이벤트가 오버되면 높이 제한 (+ 몇 개식으로 표현)
+          locale: "ko", // 한국어 설정
+          eventMouseEnter: function(info) {
+              console.log("인포", info);
+                //console.log(info.event._def.extendedProps.dragWorkName);//작업자
+                const name = info.event._def.extendedProps.dragWorkName;
+                const progress = info.event._def.extendedProps.dragProgress;
+                tippy(info.el, {
+                	   allowHTML: true,
+                   content:  "작업자 : " + name + "<br> 진행도 " + progress + "%",
+                   theme: 'gradient',
+                   delay: [0,100],
+                   position:'top',
+                   animation:'scale',
+                   interactive:'true',
+                   //followCursor: true,
+                });
+          },
+          /////////////////////////
+          eventResize: function(obj) {
+                console.log("리사이즈되냐?");//된다
+          },
+          eventClick: function(obj) {
+                console.log("클릭했어");
+                //console.dir(obj);
+                //console.log(obj);
+                console.log("pk : " + obj.event.extendedProps.dragNo);
+                const dragNo = obj.event.extendedProps.dragNo;
+                
+                let dragVO = null;
+                for (item of data) {
+                    if (item.dragNo == dragNo) {
+                    	//여기서 아이템(vo)을 넘겨주자
+                          console.log("아이템 : ", item);
+                          dragVO = item;
+                          break;
+                    }
+                }
+                
+                detailModalOpen(dragVO);
+          },
+          /////////////////////////
+          
+          eventAdd: function (obj) {
+            // 이벤트가 추가되면 발생하는 이벤트
+            /* console.log("이벤트추가!");
+            console.dir(obj.event._context.viewTitle);
+            console.dir(obj.event._context.dateProfile); */
+          },
+          eventChange: function (obj) {
+            // 이벤트가 수정되면 발생하는 이벤트
+            //console.log("이동했다", obj);
+            console.log(obj.event._def);
+            console.log("dragNo : " + obj.event._def.extendedProps.dragNo);
+            console.log(obj.event.startStr); //변경된 시작일
+            console.log(obj.event.endStr);  //변경된 종료일 
+            
+            
+            const map = {};
+            map.dragNo = obj.event._def.extendedProps.dragNo;
+            map.dragSDate = obj.event.startStr;
+            map.dragFDate = obj.event.endStr;
+            
+            const obj2 = {};
+            obj2.method = "post";
+            obj2.url = "/calendar/updateMove";
+            obj2.header = "json";
+            obj2.sendData = JSON.stringify(map);
+            
+            myAsync(obj2, (result) => {
+                    //$('#updateModal').modal('show');
+                    myRender();
+            });
+          },
+          eventRemove: function (obj) {
+            // 이벤트가 삭제되면 발생하는 이벤트
+            console.log(obj);
+          },
+          select: function (arg) {
+            // 캘린더에서 클릭 혹은 드래그로 이벤트를 생성할 수 있다.
+            // 2. 여기서 시작일, 종료일, 제목, 타이틀 받아 일감 추가하기
+            calendar.unselect(); //셀렉트된 셀은 하늘색, 언셀렉하면 사라짐
+            
+            insertModalOpen(arg);
+          },
+          // 이벤트 //여기서 이벤트를 json으로 만들어서 뿌리면 될 듯.
+          //리스트 데이터 넣기
+          events: json,
+          
+          eventMouseLeave: function(event) {
+               
+          },
+          
+        });
+        // 캘린더 랜더링
+        calendar.render();
+    });
+
+}
+
+function myAsync(obj, pCb) {
+    let header =
+      obj.header == "json"
+        ? "application/json"
+        : "application/x-www-form-urlencoded";
+    
+    const xhr = new XMLHttpRequest();
+    xhr.open(obj.method, obj.url, true);
+    xhr.setRequestHeader("Content-type", header);
+  
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        pCb(xhr.responseText);
+      }
+    };
+  
+    xhr.send(obj.sendData);
+}
+
+</script>

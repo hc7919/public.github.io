@@ -1,0 +1,288 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<style>
+ .tabulator-col-title {
+   color: black !important;
+ }
+</style>
+<div class="content-page">
+	<div class="content">
+
+		<div class="row mt-3">
+			<div class="col-xl-12">
+				<div class="card">
+					<div class="card-body">
+						<h4 class="header-title mb-4">회원관리</h4>
+
+						<ul class="nav nav-tabs nav-bordered nav-justified">
+							<li class="nav-item"><a href="javascript: gridRender();" id="member-management" class="nav-link active"> 회원관리 </a></li>
+							<li class="nav-item"><a href="javascript: projectGridRender();" id="project-management" class="nav-link"> 프로젝트 관리 </a></li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="home-b2">
+							  <div id="jinoSearchBar"></div>
+							  <div id="jinoGrid"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end card-->
+			</div>
+			<!-- end col -->
+		</div>
+
+	</div>
+</div>
+
+<script type="text/javascript">
+$('#testbtn').on('click', function() {
+	alert('되냐?')
+})
+
+gridRender();
+
+var minMaxFilterEditor = function(cell, onRendered, success, cancel, editorParams){
+
+    var end;
+
+    var container = document.createElement("span");
+
+    //create and style inputs
+    var start = document.createElement("input");
+    start.setAttribute("type", "number");
+    start.setAttribute("placeholder", "최소");
+    start.setAttribute("min", 0);
+    start.setAttribute("max", 100);
+    start.style.padding = "4px";
+    start.style.width = "50%";
+    start.style.boxSizing = "border-box";
+
+    start.value = cell.getValue();
+
+    function buildValues(){
+        success({
+            start:start.value,
+            end:end.value,
+        });
+    }
+
+    function keypress(e){
+        if(e.keyCode == 13){
+            buildValues();
+        }
+
+        if(e.keyCode == 27){
+            cancel();
+        }
+    }
+
+    end = start.cloneNode();
+    end.setAttribute("placeholder", "최대");
+
+    start.addEventListener("change", buildValues);
+    start.addEventListener("blur", buildValues);
+    start.addEventListener("keydown", keypress);
+
+    end.addEventListener("change", buildValues);
+    end.addEventListener("blur", buildValues);
+    end.addEventListener("keydown", keypress);
+
+
+    container.appendChild(start);
+    container.appendChild(end);
+
+    return container;
+ }
+
+//custom max min filter function
+function minMaxFilterFunction(headerValue, rowValue, rowData, filterParams){
+    //headerValue - the value of the header filter element
+    //rowValue - the value of the column in this row
+    //rowData - the data for the row being filtered
+    //filterParams - params object passed to the headerFilterFuncParams property
+
+        if(rowValue){
+            if(headerValue.start != ""){
+                if(headerValue.end != ""){
+                    return rowValue >= headerValue.start && rowValue <= headerValue.end;
+                }else{
+                    return rowValue >= headerValue.start;
+                }
+            }else{
+                if(headerValue.end != ""){
+                    return rowValue <= headerValue.end;
+                }
+            }
+        }
+
+    return true; //must return a boolean, true if it passes the filter.
+}
+
+function projectGridRender() {
+	document.querySelector("#member-management").classList.remove("active");
+	document.querySelector("#project-management").classList.add("active");
+	document.querySelector("#jinoGrid").innerHTML = "<div class='row justify-content-center spinner-border avatar-lg text-primary m-2'></div>";
+	//데이터의 구조는 _children안에 있는 객체들은 하위..
+	//0.프로젝트의 종류
+	//1. 프로젝트 이름
+	//2. 상위 작업
+	//3. 하위작업
+	//4단계의 트리구조
+	/* 
+	const obj = {
+	  proNo: proNo,
+	  proName: proName,
+	  proType: proType,
+	  pm: memberId,
+	  _children: [
+		{
+		  twCategoryNo: twCategoryNo, 
+		  twCategoryName: twCategoryName,
+		  _children: [
+			{
+			  	topWorkNo: topWorkNo,
+			  	topWorkTitle: topWorkTitle,
+			  	topWorkMemberId: memberId,
+			  	_children: [
+			  	  {
+			  	    subWorkNo: subWorkNo,
+			  	    subWorkTitle: subWorkTitle,
+			  	    subWorkMemberId: memberId,
+			  	  },
+			  	],
+			},  
+		  ],
+		},
+	  ]
+	}
+	 */
+	//쿼리로 뽑는거보단.. 그냥 데이터 합치는게 나은듯
+	//일단 모든데이터 다가져오기
+	axios
+	  .post("/admin/jino/getAllDatas")
+	  .then((res) => {
+		 console.log("모든 정보", res);
+		 const allDatas = res.data;
+		 const projectList = allDatas.projectList;
+		 const twCategoryList = allDatas.twCategoryList;
+		 const topWorkList = allDatas.topWorkList;
+		 const subWorkList = allDatas.subWorkList;
+		 const twRelationList = allDatas.twRelationList;
+		 
+		 for (let i = 0; i < projectList.length; i++) {
+			 const categoryArray = [];
+			 for (let j = 0; j < twCategoryList.length; j++) {
+				 //프로젝트 안에 카테고리 넣기
+				 if (projectList[i].proNo == twCategoryList[j].proNo) {
+					 categoryArray.push(twCategoryList[j]);
+				 }
+				 
+				 const topWorkArray = [];
+				 for (let k = 0; k < topWorkList.length; k++) {
+					 //카테고리 안에 상위작업 넣기
+					 if (twCategoryList[j].twCategoryNo == topWorkList[k].twCategoryNo) {
+						 topWorkArray.push(topWorkList[k]);
+					 }
+					 
+					 const subWorkArray = [];
+					 for (let l = 0; l < subWorkList.length; l++) {
+						 //상위작업 안에 하위작업 넣기
+						 if (topWorkList[k].topWorkNo == subWorkList[l].topWorkNo) {
+							 subWorkArray.push(subWorkList[l]);
+						 }
+					 }//네번째 for문
+					 
+					 topWorkList[k]._children = subWorkArray;
+				 }//세번째 for문
+				 
+				 twCategoryList[j]._children = topWorkArray;
+			 }//두번째 for문
+			 
+		   projectList[i]._children = categoryArray;
+		 }//첫번째 for문
+		 
+		 console.log("트리데이터 : ", projectList);
+		 
+		 
+	     var table = new Tabulator("#jinoGrid", {
+	         height:"700px",
+	         data: projectList,
+	         dataTree:true,
+	         dataTreeStartExpanded: false,
+	         groupBy:"proType",
+	         groupStartOpen: false,
+	         pagination: "local",
+	         paginationSize: 20,
+	         placeholder:"데이터를 불러오고 있습니다.",
+	         columns:[
+	         {title:"프로젝트 종류", field:"proType", width:150, editor: "list",
+	        	 editorParams: {
+	        	   valuesLookup: true,
+	        	 },
+	        	 headerFilter:true,
+	        	 headerFilterParams: {
+	        	   valuesLookup: true,
+	        	 },
+	        	 clearable:true,
+	        	  
+	        	     },
+	         {title:"프로젝트 이름", field:"proName", editor: "input", width:200, headerFilter: "input", clearable: true},
+	         {title:"카테고리 이름", field:"twCategoryName", editor: "input", width:200, responsive:2, headerFilter: "input", clearable: true}, //hide this column first
+	         {title:"상위작업명", field:"topWorkTitle", editor: "input", width:300, headerFilter: "input", clearable: true},
+	         {title:"진행도", field:"topWorkProgress", editor: "input", sorter:"number", hozAlign:"left", formatter:"progress", width:200,  editable:true, headerFilter:minMaxFilterEditor, headerFilterFunc:minMaxFilterFunction, headerFilterLiveFilter:false},
+	         {title:"하위작업명", field:"subWorkTitle", editor: "input", width:300, headerFilter: "input", clearable: true},
+	         ],
+	     });
+	  });
+	
+	
+	
+	
+}
+
+function gridRender(url) {
+    document.querySelector("#project-management").classList.remove("active");
+	document.querySelector("#member-management").classList.add("active");
+	document.querySelector("#jinoGrid").innerHTML = "<div class='row justify-content-center spinner-border avatar-lg text-primary m-2'></div>";
+
+    axios
+      .get("/admin/jino/getAllMember")
+      .then((res) => {
+    	  console.log("잘왓니 멤버", res);
+    	  const gridMemberData = res.data;
+    	  
+    	  return gridMemberData;
+      })
+      .then((gridMemberData) => {
+    	//define some sample data
+    	    
+    	     var table = new Tabulator("#jinoGrid", {
+    	            height: 700, // set height of table (in CSS or here), this enables the Virtual DOM and improves render speed dramatically (can be any valid css height value)
+    	            data: gridMemberData, //assign data to table
+    	            layout:"fitColumns", //fit columns to width of table (optional)
+    	            pagination: "local",
+    	            paginationSize: 20,
+    	            columns:[ //Define Table Columns
+    	                
+    	                //타이틀은 헤드명, filed는 멤버변수명으로 지정해서 쓰면 된다.
+    	                {title:"회원 ID", field:"memberId", width:250, headerFilter: "input"},
+    	                {title:"이름", field:"memberName", editor: "input", width:150, headerFilter: "input"},
+    	                {title:"전화번호", field:"memberPhone", editor: "input", width:150, headerFilter: "input"},
+    	                {title:"생년월일", field:"memberBirth", editor: "input", width:150, headerFilter: "input"},
+    	                {title:"가입일", field:"memberRegdate", editor: "input", width:150, headerFilter: "input"},
+    	                {title:"소개", field:"memberInfo", editor: "input", width:500},
+    	                //{title:"이름", field:"memberName", hozAlign:"left", formatter:"progress"},
+    	                //{title:"Favourite Color", field:"col"},
+    	                //{title:"Date Of Birth", field:"dob", sorter:"date", hozAlign:"center"},
+    	            ],
+    	        });
+
+    	        //trigger an alert message when the row is clicked
+    	        table.on("rowClick", function(e, row){ 
+    	            //alert("Row " + row.getData().id + " Clicked!!!!");
+    	        });
+      });
+    
+}
+
+
+</script>

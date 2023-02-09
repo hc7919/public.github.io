@@ -1,0 +1,39 @@
+package kr.or.ddit.controller.upload;
+
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import kr.or.ddit.vo.FileLocationVO;
+import kr.or.ddit.vo.FileTreeVO;
+import kr.or.ddit.vo.FileVO;
+import kr.or.ddit.vo.ProjectVO;
+import kr.or.ddit.vo.TopWorkCategoryVO;
+
+public interface IUploadService {
+
+	// OJH  프로젝트 생성시 프로젝트 폴더 생성
+	public void mkProjectDir(ProjectVO projectVO, HttpServletRequest req);
+
+	// OJH  카테고리 생성시  프로젝트/카테고리 폴더 생성
+	public void mkCategoryDir(TopWorkCategoryVO topWorkCategoryVO, HttpServletRequest req);
+
+
+	//OJH 상위작업 생성시 파일 경로 설정
+	public int insertFileLocation(FileLocationVO fileLocationVO);
+	public List<FileTreeVO> getFileList();
+
+	//OJH 상위작업 파일 업로드시 해당 파일들 db 넣기  이거 안됨 ㅠㅠ
+	public int insertFiles(List<FileVO> list) throws Exception;
+
+	// ojh 파일 하나하나 넣기
+	public int insertFile(FileVO fileVO) throws Exception;
+
+	//해당 카테고리 번호에 있는 모든 파일 가져오기
+	public List<FileVO> getCategoryFiles(String twCategoryNo) throws Exception;
+
+	//해당 카테고리 이름수정시 파일 경로 수정
+	public int changeFilePath(FileVO cfile) throws Exception;
+
+
+}

@@ -1,0 +1,98 @@
+package kr.or.ddit.controller.topwork.kanban;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import kr.or.ddit.controller.topwork.service.ICalendarService;
+import kr.or.ddit.vo.TopWorkCategoryVO;
+import kr.or.ddit.vo.TopWorkVO;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Controller
+@RequestMapping("/kanban")
+public class KanbanController {
+    
+    @Inject
+    private ICalendarService calendarService; //이름을 ITopWorkService로 바꿔야함
+    
+    @GetMapping("/main")
+    public String kanbanMain() {
+        log.debug("메인");
+        
+        return "content/kanbanboard";
+    }
+    
+    @PostMapping(value = "/list", produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public List<TopWorkVO> kanbanList() throws Exception {
+        log.debug("리스트");
+        List<TopWorkVO> list = calendarService.list();
+        
+        return list;
+    }
+    
+    @PostMapping(value = "/insert", produces = "text/plain; charset=utf-8")
+    @ResponseBody
+    public String kanbanInsert(@RequestBody TopWorkVO topWorkVO) throws Exception {
+        topWorkVO.setProNo("100");
+        log.debug("인서트 들어옴, {}", topWorkVO);
+        
+        calendarService.insert(topWorkVO);
+        
+        return "인서트 성공";
+    }
+    
+    @PostMapping(value = "/categoryList", produces = "application/json; charset=utf-8")
+    @ResponseBody
+    public List<TopWorkCategoryVO> categoryList() throws Exception{
+        List<TopWorkCategoryVO> list = calendarService.categoryList();
+        
+        return list;
+    }
+    
+    @PostMapping(value = "/categoryInsert", produces = "text/plain; charset=utf-8")
+    @ResponseBody
+    public String categoryInsert(@RequestBody TopWorkCategoryVO topWorkCategoryVO) throws Exception {
+        log.debug("카테고리 VO : {}", topWorkCategoryVO);
+        calendarService.categoryInsert(topWorkCategoryVO);
+        
+        return "카테고리인서트";
+    }
+    
+    @PostMapping(value = "/categoryDelete", produces = "text/plain; charset=utf-8")
+    @ResponseBody
+    public String categoryDelete(@RequestBody TopWorkCategoryVO topWorkCategoryVO) throws Exception{
+        log.debug("카테고리 VO : {}", topWorkCategoryVO);
+        calendarService.categoryDelete(topWorkCategoryVO);
+        
+        return "카테고리딜리트~";
+    }
+    
+    @PostMapping(value = "/topWorkMove", produces = "text/plain; charset=utf-8")
+    @ResponseBody
+    public String topWorkMove(@RequestBody TopWorkVO topWorkVO) throws Exception {
+        log.debug("전송된 객체 : {}", topWorkVO);
+        calendarService.topWorkMove(topWorkVO);
+        
+        return "success";
+    }
+    
+    @PostMapping(value = "/logInsert", produces = "text/plain; charset=utf-8")
+    @ResponseBody
+    public String logInsert(@RequestBody Map<String, String> map) throws Exception {
+        log.debug("전송된 맵 : {}", map);
+        calendarService.logInsert(map);
+        
+        return "로그인서트 성공";
+    }
+}

@@ -1,0 +1,14 @@
+package kr.or.ddit.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import kr.or.ddit.vo.WidgetVO;
+
+@Mapper
+public interface WidgetMapper {
+
+    public List<WidgetVO> list() throws Exception;
+
+}

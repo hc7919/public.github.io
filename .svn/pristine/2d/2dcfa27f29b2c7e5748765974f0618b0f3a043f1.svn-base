@@ -1,0 +1,17 @@
+package kr.or.ddit.mapper;
+
+import java.util.List;
+
+import kr.or.ddit.vo.FileVO;
+
+public interface FileMapper {
+
+	public int insertFiles(List<FileVO> list) throws Exception;
+
+	public int insertFile(FileVO fileVO) throws Exception;
+
+	public List<FileVO> getCategoryFiles(String twCategoryNo) throws Exception;
+
+	public int changeFilePath(FileVO cfile) throws Exception;
+
+}

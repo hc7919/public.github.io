@@ -1,0 +1,11 @@
+package kr.or.ddit.vo;
+
+import lombok.Data;
+
+@Data
+public class FileLocationVO {
+	private int fileLNo;   // 파일경로 번호
+	private String fileLocation; // 파일 위치
+	private String fileUploadDate; // 파일 올린 날짜
+	private boolean dirIsdeleted;  // location이 지워졌냐 안지워졌냐
+}

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.CalendarMapper">
+    <select id="list" resultType="dragTestVO">
+        <![CDATA[
+            SELECT DRAG_NO
+                 , DRAG_WORKNAME
+                 , DRAG_STATUS
+                 , DRAG_S_DATE
+                 , DRAG_F_DATE
+                 , DRAG_WORKCONTENT
+                 , DRAG_CATEGORY
+                 , DRAG_PROGRESS
+              FROM DRAGTEST
+             WHERE DRAG_NO > 0
+             ORDER BY DRAG_F_DATE ASC
+        ]]>
+    </select>
+    
+    <insert id="insert" parameterType="Map">
+        INSERT INTO DRAGTEST (
+            DRAG_NO, DRAG_WORKNAME, DRAG_WORKCONTENT, DRAG_S_DATE, DRAG_F_DATE, DRAG_STATUS, DRAG_CATEGORY, DRAG_PROGRESS
+        ) VALUES (
+            <if test="dragSDate == null and dragFDate== null">
+                SEQ_DRAG.NEXTVAL
+              , #{dragWorkName}
+              , #{dragWorkContent}
+              , TO_CHAR(SYSDATE,'YYYY-MM-DD')
+              , TO_CHAR(SYSDATE,'YYYY-MM-DD')
+              , '작업대기'
+              , #{dragCategory}
+              , '0'
+            </if>
+            
+            <if test="dragSDate != null">
+                SEQ_DRAG.NEXTVAL
+              , #{dragWorkName}
+              , #{dragWorkContent}
+              , #{dragSDate}
+              , #{dragFDate}
+              , '작업대기'
+              , #{dragCategory}
+              , '0'
+            </if>
+        )
+    </insert>
+    
+    <update id="updateMove" parameterType="Map">
+        UPDATE DRAGTEST
+           SET DRAG_S_DATE = #{dragSDate}
+             , DRAG_F_DATE = #{dragFDate}
+         WHERE DRAG_NO = #{dragNo}
+    </update>
+    
+    <update id="update" parameterType="Map">
+        UPDATE DRAGTEST
+           SET DRAG_WORKNAME = #{dragWorkName}
+             , DRAG_WORKCONTENT = #{dragWorkContent}
+             , DRAG_CATEGORY = #{dragCategory}
+             , DRAG_PROGRESS = #{dragProgress}
+         WHERE DRAG_NO = #{dragNo}
+    </update>
+    
+</mapper>

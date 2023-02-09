@@ -1,0 +1,50 @@
+package kr.or.ddit.controller.topwork.service;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Service;
+
+import kr.or.ddit.mapper.CalendarMapper;
+import kr.or.ddit.vo.DragTestVO;
+import kr.or.ddit.vo.TopWorkVO;
+import lombok.extern.slf4j.Slf4j;
+
+
+@Service
+@Slf4j
+public class CalendarServiceImpl implements ICalendarService {
+    @Inject
+    private CalendarMapper mapper;
+    
+    @Override
+    public List<TopWorkVO> list() throws Exception {
+        return mapper.list();
+    }
+
+    @Override
+    public void insert(TopWorkVO topWorkVO) throws Exception {
+        mapper.insert(topWorkVO);//인서트 이후 topWorkNo가 추가되어있음.
+        log.debug("topWorkVO 상태: {}", topWorkVO);
+        
+        mapper.insertRelation(topWorkVO);
+    }
+
+    @Override
+    public void updateMove(TopWorkVO topWorkVO) throws Exception {
+        mapper.updateMove(topWorkVO);
+    }
+
+    @Override
+    public void update(TopWorkVO topWorkVO) throws Exception {
+        mapper.update(topWorkVO);
+    }
+
+    @Override
+    public void delete(TopWorkVO topWorkVO) throws Exception {
+        mapper.delete(topWorkVO);
+    }
+
+}

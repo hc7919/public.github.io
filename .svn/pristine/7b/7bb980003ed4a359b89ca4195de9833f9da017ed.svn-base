@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.FileMapper">
+	<insert id="insertFile" parameterType="fileVO">
+		INSERT INTO BFILE(
+			FILE_L_NO,
+			FILE_L_NO2,
+			FILE_REAL_NAME,
+			FILE_SIZE,
+			FILE_ISIMAGE,
+			FILE_UUID,
+			FILE_NAME,
+			FILE_PATH
+			
+		) VALUES (
+			#{fileLNo},
+			SEQ_FILE_L_NO2.NEXTVAL,
+			#{fileRealName},
+			#{fileSize},
+			#{image},
+			#{uuid},
+			#{fileName},
+			#{filePath}
+		)
+	</insert>
+	
+	<select id="getCategoryFiles" parameterType="string" resultType="fileVO">
+	 select * from bfile a, (select * from topwork where tw_category_no = #{tw_category_no}) b
+	 
+	 where a.file_l_no = b.TOPWORK_FILE
+                                        	
+	</select>
+	
+	<update id="changeFilePath" parameterType="fileVO">
+		UPDATE BFILE 
+		SET FILE_PATH = #{filePath}
+		WHERE FILE_NAME = #{fileName}
+	</update>
+</mapper>

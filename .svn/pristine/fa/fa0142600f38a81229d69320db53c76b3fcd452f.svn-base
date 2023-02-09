@@ -1,0 +1,12 @@
+package kr.or.ddit.controller.upload;
+
+import java.util.List;
+
+import kr.or.ddit.vo.FileTreeVO;
+
+public interface IFileTreeService {
+	
+	// SSY 파일트리용 - 리스트 그냥 띄워보기...
+	public List<FileTreeVO> list(String proNo) throws Exception;
+	
+}

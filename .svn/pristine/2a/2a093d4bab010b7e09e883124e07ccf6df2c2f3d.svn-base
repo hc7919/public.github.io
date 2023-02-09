@@ -1,0 +1,21 @@
+package kr.or.ddit.controller.member.service;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Service;
+
+import kr.or.ddit.mapper.MypageMapper;
+
+@Service
+public class MypageServiceImpl implements IMypageService {
+
+	@Inject
+	MypageMapper mapper;
+	
+	@Override
+	public String selectMemberPic(String userId) {
+		String selectPic = mapper.selectPic(userId);
+		return selectPic;
+	}
+	
+}

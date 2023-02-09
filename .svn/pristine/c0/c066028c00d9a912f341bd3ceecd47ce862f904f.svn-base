@@ -1,0 +1,123 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!-- ============================================================== -->
+<!-- Start Page Content here -->
+<!-- ============================================================== -->
+
+
+<div class="inbox-rightbar" style="margin-left: 190px;">
+
+	<div class="mt-2">
+		<div class="page-title-box">
+			<h4 class="page-title">상세보기</h4>
+		</div>
+
+		<hr />
+			
+		<div class="d-flex align-items-start mb-2 mt-1">
+			<img class="d-flex me-2 rounded-circle" src="/assets/images/users/user-2.jpg" alt="placeholder image" height="32">
+			<div class="w-100">
+				<small class="float-end">Dec 14, 2017, 5:17 AM</small>
+				<h6 id="detailSender" class="m-0 font-14">Steven ${res.letterSender}</h6>
+				<small class="text-muted">From: jonathan@domain.com</small>
+			</div>
+		</div>
+
+		<p>내용</p>
+		<hr />
+
+		<h5 class="mb-3">Attachments</h5>
+
+		<div class="row">
+			<div class="col-xl-4">
+				<div class="card mb-1 shadow-none border">
+					<div class="p-2">
+						<div class="row align-items-center">
+							<div class="col-auto">
+								<div class="avatar-sm">
+									<span class="avatar-title bg-soft-primary text-primary rounded"> .ZIP </span>
+								</div>
+							</div>
+							<div class="col ps-0">
+								<a href="javascript:void(0);" class="text-muted fw-bold">Codefox-admin-design.zip</a>
+								<p class="mb-0">2.3 MB</p>
+							</div>
+							<div class="col-auto">
+								<!-- Button -->
+								<a href="javascript:void(0);" class="btn btn-link btn-lg text-muted"> <i class="dripicons-download"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end col -->
+			<div class="col-xl-4">
+				<div class="card mb-1 shadow-none border">
+					<div class="p-2">
+						<div class="row align-items-center">
+							<div class="col-auto">
+								<div class="avatar-sm">
+									<span class="avatar-title bg-soft-success text-success rounded"> .JPG </span>
+								</div>
+							</div>
+							<div class="col ps-0">
+								<a href="javascript:void(0);" class="text-muted fw-bold">Dashboard-design.jpg</a>
+								<p class="mb-0">3.25 MB</p>
+							</div>
+							<div class="col-auto">
+								<!-- Button -->
+								<a href="javascript:void(0);" class="btn btn-link btn-lg text-muted"> <i class="dripicons-download"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end col -->
+			<div class="col-xl-4">
+				<div class="card mb-0 shadow-none border">
+					<div class="p-2">
+						<div class="row align-items-center">
+							<div class="col-auto">
+								<div class="avatar-sm">
+									<span class="avatar-title bg-secondary rounded"> .MP4 </span>
+								</div>
+							</div>
+							<div class="col ps-0">
+								<a href="javascript:void(0);" class="text-muted fw-bold">Admin-bug-report.mp4</a>
+								<p class="mb-0">7.05 MB</p>
+							</div>
+							<div class="col-auto">
+								<!-- Button -->
+								<a href="javascript:void(0);" class="btn btn-link btn-lg text-muted"> <i class="dripicons-download"></i>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end col -->
+		</div>
+		<!-- end row-->
+
+		<div class="mt-5">
+			<a href="" class="btn btn-primary me-2"><i class="mdi mdi-reply me-1"></i> Reply</a> <a href="" class="btn btn-light">Forward <i class="mdi mdi-forward ms-1"></i></a>
+		</div>
+
+	</div>
+	<!-- end .mt-4 -->
+
+</div>
+<!-- end inbox-rightbar-->
+
+<div class="clearfix"></div>
+
+
+<!-- ============================================================== -->
+<!-- End Page content -->
+<!-- ============================================================== -->
+
+<script type="text/javascript">
+
+
+</script>

@@ -1,0 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<div class="card-body">
+	<div class="row">
+		<div class="col-lg-1">
+			<div id="">여기 메뉴들어가면 괜찮겠다.</div>
+		</div>
+		<div class="col-lg-9">
+			<div id="calendar"></div>
+		</div>
+	</div>
+</div>

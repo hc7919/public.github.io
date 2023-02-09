@@ -1,0 +1,50 @@
+package kr.or.ddit.controller.myhome;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Controller
+@RequestMapping("/myhome")
+public class MyhomeController {
+
+	@GetMapping("/home")
+	public String myHome() {
+		return "content/myhome";
+	}
+	
+	@GetMapping(value = "/crawlingNews" ,produces = "application/json;charset=utf-8")
+	@ResponseBody
+	public List<String> startCrawl() throws IOException {
+		
+		List<String> newsList = new ArrayList<String>();
+		
+		String url = "https://www.mk.co.kr/news/it/internet/";
+		Document doc = Jsoup.connect(url).get();
+		
+		
+		Elements element = doc.select("ul#list_area");
+		
+		for(Element el : element.select("li.news_node")) {
+			String newsItem = el.html();
+			
+			newsList.add(newsItem);
+		}
+		return newsList; 
+	}
+	
+}

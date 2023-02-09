@@ -1,0 +1,16 @@
+package kr.or.ddit.controller.upload;
+
+import javax.servlet.http.HttpServletRequest;
+
+import kr.or.ddit.vo.ProjectVO;
+import kr.or.ddit.vo.TopWorkCategoryVO;
+
+public interface IUploadService {
+
+	// OJH  프로젝트 생성시 프로젝트 폴더 생성
+	void mkProjectDir(ProjectVO projectVO, HttpServletRequest req);
+
+	//OJH  카테고리 생성시  프로젝트/카테고리 폴더 생성
+	void mkCategoryDir(TopWorkCategoryVO topWorkCategoryVO, HttpServletRequest req);
+
+}

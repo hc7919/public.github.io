@@ -1,0 +1,31 @@
+package kr.or.ddit.controller.member;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@Controller
+@RequestMapping("/member")
+public class MemberController {
+
+	/**
+	 * 
+	 * @return
+	 */
+	@GetMapping("/register")
+	public String memberRegisterForm_H() {
+		log.debug("회원가입 :: " );
+		return "commons/register";
+	}
+	@PostMapping("/register")
+	public String memberRegister_H() {
+		log.debug("회원가입 :: " );
+		return "commons/register";
+	}
+	
+	
+}

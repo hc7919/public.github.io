@@ -1,0 +1,200 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+
+<style>
+.parent {
+    width: 90%;
+    margin: 10px auto;
+    display: flex;
+    flex-direction: row;
+}
+.container {
+    width: 200px;
+    min-height: 400px;
+    height: auto;
+    margin: 10px;
+    padding: 10px;
+    background-color: #b5c1dc57;
+    border-radius: 8px;
+}
+</style>
+<!-- content-page div가 있어야 내용이 출력된다. -->
+<div class="content-page">
+	<div class="content">
+		<!-- Start Content-->
+		<div class="container-fluid">
+			<!-- start page title -->
+			<div class="row">
+				<div class="col-12">
+					<div class="page-title-box">
+						<h4 class="page-title">칸반보드</h4>
+						<div>
+							<ol class="breadcrumb m-0">
+								<li class="breadcrumb-item"><a href="javascript: void(0);">Codefox</a></li>
+								<li class="breadcrumb-item"><a href="javascript: void(0);">Apps</a></li>
+								<li class="breadcrumb-item active">칸반보드</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- end page title -->
+			<!-- 작업추가 -->
+			<button type="button" class="btn btn-primary width-lg waves-effect waves-light">일감 생성하기</button>
+            <!-- 작업추가 end -->
+			<div class="row justify-content-center">
+				<div class="col-xl-10">
+					<!-- Plans -->
+					<div class="parent">
+						<div class="container" id="섹션1">
+						<div>나에게 배정된 작업</div>
+							<div class="table-responsive draggable">
+								<table class="table table-borderless mb-0">
+									<thead class="table-active">
+									    <tr>
+									        <th>제목</th>
+									    </tr>
+									</thead>
+									<tbody class="table-light">
+									    <tr>
+									        <td>내용</td>
+									    </tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="table-responsive draggable">
+								<table class="table table-borderless mb-0">
+									<thead class="table-active">
+									    <tr>
+									        <th>제목</th>
+									    </tr>
+									</thead>
+									<tbody class="table-light">
+									    <tr>
+									        <td>내용</td>
+									    </tr>
+									</tbody>
+								</table>
+							</div>
+							<div class="table-responsive draggable">
+								<table class="table table-borderless mb-0">
+									<thead class="table-active">
+									    <tr>
+									        <th>제목</th>
+									    </tr>
+									</thead>
+									<tbody class="table-light">
+									    <tr>
+									        <td>내용</td>
+									    </tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="container" id="섹션2">여기 작업대기</div>
+						<div class="container" id="섹션3">여기 작업중</div>
+						<div class="container" id="섹션4">여기 작업완료</div>
+					</div>
+					<!-- end row -->
+
+				</div>
+				<!-- end col-->
+			</div>
+			<!-- end row -->
+
+		</div>
+		<!-- container -->
+
+	</div>
+	<!-- content -->
+</div>
+<!-- 템플맀거 -->
+<script
+	src="${pageContext.request.contextPath }/resources/dist/assets/js/vendor.min.js"></script>
+<script
+	src="${pageContext.request.contextPath }/resources/dist/assets/js/app.min.js"></script>
+<!-- 드래그 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+<!-- axios -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+axios.post("/kanban/list")
+    .then((response) => {
+    	   //console.log(response.data);
+    	   //여기서 div를 만들어줘야함
+    	   //일단은 모두 배정된 작업에 넣어버리기
+    	   const json = response.data;
+    	   
+    	   let text = "";
+    	   for (item of json) {
+    		   console.log(item.topWorkTitle);
+    		   text += `<div class="table-responsive draggable">`;
+    		   text += `  <table class="table table-borderless mb-0">`;
+    		   text += `      <thead class="table-active">`;
+    		   text += `          <tr>`;
+    		   text += `              <th>\${item.topWorkTitle}</th>`;
+    		   text += `          </tr>`;
+    		   text += `      <tbody class="table-light">`;
+    		   text += `          <tr>`;
+    		   text += `              <td>\${item.topWorkContent}</td>`;
+    		   text += `          </tr>`;
+    		   text += `      </tbody>`;
+    		   text += `  </table>`;
+    		   text += `</div>`;
+    	   }
+    	   
+    	   console.log(text);
+    	   document.querySelector("#섹션1").innerHTML = text;
+    });
+
+
+//우선 비동기로 목록을 불러와서 각각의 영역에 넣어줘야함
+//DB 연동해서 만든 후에 카테고리를 추가하는 기능을 만들어야함
+
+
+
+const containers = document.querySelectorAll(".container");
+console.log(containers);
+
+containers.forEach((container) => { //인자로 자식 div들을 받음
+	new Sortable(container, {
+		group: {
+            name: 'shared',//이게 같은 Sortable 객체들끼리 이동 가능
+        },
+        animation: 150,
+        ghostClass: 'blue-background-class',
+        //sort: false, 이거 false하면 원래 영역 내에서는 안움직임
+        onChoose: function(event) { //클릭한 아이템
+            //선택한 영역 안에 테이블 목록
+        },
+        onEnd: function(event) { //내려놓았을때!
+            console.log("엔드아이템 : ", event.item.id); //내려놓은 아이템
+            //여기서 그 영역 div의 id를 가져와야함.
+            //console.log("부모 : ", event.from);
+            console.log("시작한 부모아이디 : ", event.from.id);
+            console.log("도착한 부모요소 아이디 : ", event.to.id);//도착한 div영역
+            
+            
+            
+            if (event.to.id == "섹션1") {
+            	   event.item.firstElementChild.children[0].className = "table-active";
+            }
+            if (event.to.id == "섹션2") {
+            	   event.item.firstElementChild.children[0].className = "table-warning";
+            }
+            
+            if (event.to.id == "섹션3") {
+            	   event.item.firstElementChild.children[0].className = "table-info";
+            }
+            
+            if (event.to.id == "섹션4") {
+            	   event.item.firstElementChild.children[0].className = "table-success";
+            }
+            
+         	console.log(event.item.firstElementChild.children[0].className);
+            
+         },
+	});
+});
+
+</script>

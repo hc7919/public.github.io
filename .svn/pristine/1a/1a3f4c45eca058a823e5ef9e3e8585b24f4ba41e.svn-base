@@ -1,0 +1,11 @@
+package kr.or.ddit.controller.widget.service;
+
+import java.util.List;
+
+import kr.or.ddit.vo.WidgetVO;
+
+public interface IWidgetService {
+
+    public List<WidgetVO> list() throws Exception;
+
+}

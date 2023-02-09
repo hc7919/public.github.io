@@ -1,0 +1,9 @@
+package kr.or.ddit.controller.project.service;
+
+import kr.or.ddit.vo.ProjectVO;
+
+public interface IProjectService {
+
+    public void insert(ProjectVO projectVO) throws Exception;
+
+}

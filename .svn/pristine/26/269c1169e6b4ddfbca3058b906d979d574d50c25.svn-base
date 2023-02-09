@@ -1,0 +1,21 @@
+package kr.or.ddit.controller.subwork.service;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Controller;
+
+import kr.or.ddit.mapper.SubWorkMapper;
+import kr.or.ddit.vo.SubWorkVO;
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
+@Controller
+public class SubWorkServiceImpl implements ISubWorkService {
+    @Inject
+    private SubWorkMapper mapper;
+    
+    @Override
+    public void subWorkInsert(SubWorkVO subWorkVO) throws Exception {
+        mapper.subWorkInsert(subWorkVO);
+    }
+
+}
